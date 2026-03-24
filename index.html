@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的二次元主页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* 二次元渐变背景 */
+        body {
+            font-family: "微软雅黑", sans-serif;
+            background: linear-gradient(135deg, #ffc0cb 0%, #e0ffff 50%, #d8bfd8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #333;
+        }
+        /* 卡片样式 */
+        .card {
+            background: rgba(255,255,255,0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255,105,180,0.3);
+            backdrop-filter: blur(10px);
+        }
+        /* 头像 */
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #ff69b4;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        /* 标题 */
+        h1 {
+            font-size: 32px;
+            color: #ff69b4;
+            margin-bottom: 10px;
+        }
+        /* 介绍 */
+        .desc {
+            font-size: 18px;
+            margin: 10px 0 30px;
+            color: #666;
+        }
+        /* 链接按钮 */
+        .links a {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            background: #ff69b4;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .links a:hover {
+            background: #ff1493;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <!-- 二次元头像 -->
+        <img src="https://p.qqan.com/up/2021-7/16256414718933176.jpg" alt="二次元头像" class="avatar">
+        <h1>我的二次元小站</h1>
+        <p class="desc">喜欢动漫、游戏、一切可爱的事物✨</p>
+        <div class="links">
+            <a href="https://bilibili.com" target="_blank">B站</a>
+            <a href="#">我的番剧清单</a>
+            <a href="#">二次元壁纸</a>
+        </div>
+    </div>
+</body>
+</html>
