@@ -17,12 +17,38 @@
     body {
       font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, #f5efff 0%, #dfe7ff 50%, #ffe6f7 100%);
+      /* 可选：注释掉渐变背景，只用轮播图；保留则叠加显示 */
+      /* background: linear-gradient(135deg, #f5efff 0%, #dfe7ff 50%, #ffe6f7 100%); */
       overflow-x: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      position: relative; /* 新增 */
+    }
+
+    /* 新增：背景轮播样式 */
+    .bg-slider {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+    .bg-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+    .bg-slide.active {
+      opacity: 1;
     }
 
     body::before {
@@ -37,7 +63,7 @@
         radial-gradient(circle at 80% 70%, rgba(173,216,230,0.3) 0%, transparent 5%);
       background-size: 100% 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: -1; /* 修改 */
     }
 
     .container {
@@ -203,6 +229,17 @@
 </head>
 
 <body>
+  <!-- 新增：背景轮播容器 -->
+  <div class="bg-slider">
+    <!-- 替换成你的图片链接，可新增/删除 -->
+    <div class="bg-slide active" style="background-image: url('https://img.cdn1.vip/i/69c38cd0ab96e_1774423248.webp');"></div>
+    <div class="bg-slide active" style="background-image: url('https://img.cdn1.vip/i/69c38cd79f45d_1774423255.webp');"></div>
+    <div class="bg-slide active" style="background-image: url('https://img.cdn1.vip/i/69c38cd604f8e_1774423254.webp');"></div>
+    <div class="bg-slide active" style="background-image: url('https://img.cdn1.vip/i/69c38cd1ce7cf_1774423249.webp');"></div>
+    <div class="bg-slide" style="background-image: url('https://img.cdn1.vip/i/69c38cd82d0d0_1774423256.webp');"></div>
+    <div class="bg-slide" style="background-image: url('https://img.cdn1.vip/i/69c38cd5a6629_1774423253.webp');"></div> <!-- 示例新增，替换链接 -->
+  </div>
+
   <div class="container">
     <div class="card">
       <img class="avatar" src="https://img.cdn1.vip/i/69c380c30640c_1774420163.jpg" alt="avatar" />
@@ -231,12 +268,13 @@
         <audio id="bgm" loop>
           <!-- 这里替换成你的音乐直链 -->
           <source src="https://cdn.sakurai.dev.cn/music/daily.mp3" type="audio/mpeg">
-        
+        </audio> <!-- 修复原有缺失的闭合标签 -->
       </div>
     </div>
   </div>
 
   <script>
+    // 原有：音乐播放逻辑
     const bgm = document.getElementById('bgm');
     const playBtn = document.getElementById('playBtn');
     let isPlaying = false;
@@ -251,6 +289,19 @@
       }
       isPlaying = !isPlaying;
     });
+
+    // 新增：背景轮播逻辑
+    const slides = document.querySelectorAll('.bg-slide');
+    let currentSlide = 0;
+    const slideInterval = 5000; // 5秒切换一次
+
+    function nextSlide() {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+
+    setInterval(nextSlide, slideInterval);
   </script>
 </body>
 </html>
