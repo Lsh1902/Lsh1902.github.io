@@ -17,8 +17,6 @@
     body {
       font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
       min-height: 100vh;
-      /* 恢复渐变背景（可选，也可注释掉只用轮播图） */
-      background: linear-gradient(135deg, #f5efff 0%, #dfe7ff 50%, #ffe6f7 100%);
       overflow-x: hidden;
       display: flex;
       align-items: center;
@@ -27,7 +25,7 @@
       position: relative;
     }
 
-    /* 背景轮播样式 */
+    /* 保留背景轮播样式（核心） */
     .bg-slider {
       position: fixed;
       top: 0;
@@ -35,7 +33,6 @@
       width: 100%;
       height: 100%;
       z-index: -2;
-      opacity: 0.85; /* 轮播图半透，显示底层渐变 */
     }
     .bg-slide {
       position: absolute;
@@ -52,7 +49,8 @@
       opacity: 1;
     }
 
-    body::before {
+    /* 1. 关闭body径向渐变叠加层（注释掉） */
+    /* body::before {
       content: '';
       position: fixed;
       top: 0;
@@ -65,7 +63,7 @@
       background-size: 100% 100%;
       pointer-events: none;
       z-index: -1;
-    }
+    } */
 
     .container {
       position: relative;
@@ -74,18 +72,20 @@
       max-width: 480px;
     }
 
-    /* 移除亚克力效果：改为实色背景，删除backdrop-filter，调整边框/阴影 */
     .card {
-      background: #ffffff; /* 实色白色背景 */
+      /* 简化卡片样式，移除半透明和模糊（可选保留模糊，删除则注释backdrop-filter） */
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px); /* 可选：降低模糊度，关闭则删除 */
       border-radius: 24px;
       padding: 40px 32px;
-      box-shadow: 0 8px 40px rgba(150, 120, 255, 0.15);
-      border: 1px solid #f0e8ff; /* 浅紫色边框替代半透边框 */
+      box-shadow: none; /* 关闭卡片阴影 */
+      border: 1px solid #eee; /* 简化边框 */
       text-align: center;
       position: relative;
     }
 
-    .card::before {
+    /* 2. 关闭卡片渐变发光效果（注释掉） */
+    /* .card::before {
       content: '';
       position: absolute;
       top: -2px; left: -2px; right: -2px; bottom: -2px;
@@ -99,7 +99,7 @@
     @keyframes glow {
       0% { filter: hue-rotate(0deg); }
       100% { filter: hue-rotate(360deg); }
-    }
+    } */
 
     .avatar {
       width: 120px;
@@ -107,7 +107,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 4px solid #fff;
-      box-shadow: 0 0 20px rgba(255, 154, 214, 0.4);
+      box-shadow: none; /* 关闭头像阴影 */
       margin-bottom: 20px;
     }
 
@@ -134,11 +134,10 @@
 
     .tag {
       padding: 6px 12px;
-      background: rgba(167,140,255,0.1);
+      background: #f5f5f5; /* 简化标签背景为纯色 */
       color: #7f6fcf;
       border-radius: 20px;
       font-size: 13px;
-      border: 1px solid #f0e8ff; /* 实色边框替代亚克力边框 */
     }
 
     .links {
@@ -158,16 +157,16 @@
       font-size: 15px;
       border: none;
       cursor: pointer;
-      border: 1px solid transparent; /* 统一按钮边框样式 */
     }
 
+    /* 3. 按钮改为纯色背景（关闭渐变） */
     .btn-bilibili {
-      background: linear-gradient(90deg, #fb7299, #ff9faf);
+      background: #fb7299; /* 取渐变主色，关闭linear-gradient */
       color: #fff;
     }
 
     .btn-love {
-      background: linear-gradient(90deg, #9c87ff, #7f6fcf);
+      background: #7f6fcf; /* 取渐变主色，关闭linear-gradient */
       color: #fff;
     }
 
@@ -177,18 +176,19 @@
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: none; /* 关闭hover上移效果 */
+      box-shadow: none; /* 关闭hover阴影 */
+      opacity: 0.9; /* 简化hover效果为透明度变化 */
     }
 
-    /* 音乐播放器移除亚克力：改为实色背景 */
+    /* 二次元音乐播放器样式 - 简化 */
     .music-player {
-      background: #ffffff; /* 实色白色背景 */
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
       border-radius: 16px;
       padding: 16px;
       margin-top: 12px;
-      border: 1px solid #ffd6e0; /* 浅粉色边框替代半透边框 */
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border: 1px solid #eee; /* 简化边框 */
     }
 
     .music-title {
@@ -209,7 +209,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(45deg, #ff9ed8, #a78cff);
+      background: #a78cff; /* 纯色替换渐变 */
       color: #fff;
       border: none;
       font-size: 16px;
@@ -218,12 +218,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 8px rgba(255, 154, 214, 0.3);
     }
 
     .control-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 10px rgba(255, 154, 214, 0.4);
+      transform: none; /* 关闭缩放 */
+      box-shadow: none; /* 关闭阴影 */
+      opacity: 0.9; /* 简化hover */
     }
 
     audio {
@@ -233,9 +233,9 @@
 </head>
 
 <body>
-  <!-- 背景轮播容器 -->
+  <!-- 保留背景轮播容器（核心） -->
   <div class="bg-slider">
-    <div class="bg-slide active" style="background-image: url('https://img.cdn1.vip/i/69c38cd0ab96e_1774423248.webp');"></div>
+    <div class="bg-slide" style="background-image: url('https://img.cdn1.vip/i/69c38cd0ab96e_1774423248.webp');"></div>
     <div class="bg-slide" style="background-image: url('https://img.cdn1.vip/i/69c38cd79f45d_1774423255.webp');"></div>
     <div class="bg-slide" style="background-image: url('https://img.cdn1.vip/i/69c38cd604f8e_1774423254.webp');"></div>
     <div class="bg-slide" style="background-image: url('https://img.cdn1.vip/i/69c38cd1ce7cf_1774423249.webp');"></div>
@@ -275,6 +275,7 @@
     </div>
   </div>
 
+  <!-- 保留背景轮播和音乐播放逻辑（核心） -->
   <script>
     // 音乐播放逻辑
     const bgm = document.getElementById('bgm');
@@ -292,10 +293,10 @@
       isPlaying = !isPlaying;
     });
 
-    // 背景轮播逻辑
+    // 背景轮播逻辑（保留）
     const slides = document.querySelectorAll('.bg-slide');
     let currentSlide = 0;
-    const slideInterval = 5000; // 5秒切换一次
+    const slideInterval = 5000;
 
     function nextSlide() {
       slides[currentSlide].classList.remove('active');
@@ -304,6 +305,8 @@
     }
 
     setInterval(nextSlide, slideInterval);
+    // 初始化显示第一张轮播图
+    slides[0].classList.add('active');
   </script>
 </body>
 </html>
