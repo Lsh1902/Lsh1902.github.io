@@ -17,8 +17,8 @@
     body {
       font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
       min-height: 100vh;
-      /* 核心：恢复并优化背景渐变，与轮播图叠加 */
-      background: linear-gradient(135deg, #f5efff 0.5%, #dfe7ff 50%, #ffe6f7 99.5%);
+      /* 恢复渐变背景（可选，也可注释掉只用轮播图） */
+      background: linear-gradient(135deg, #f5efff 0%, #dfe7ff 50%, #ffe6f7 100%);
       overflow-x: hidden;
       display: flex;
       align-items: center;
@@ -27,7 +27,7 @@
       position: relative;
     }
 
-    /* 背景轮播：降低不透明度，让渐变底色透出 */
+    /* 背景轮播样式 */
     .bg-slider {
       position: fixed;
       top: 0;
@@ -35,7 +35,7 @@
       width: 100%;
       height: 100%;
       z-index: -2;
-      opacity: 0.85; /* 轮播图半透明，显示底层渐变 */
+      opacity: 0.85; /* 轮播图半透，显示底层渐变 */
     }
     .bg-slide {
       position: absolute;
@@ -52,7 +52,6 @@
       opacity: 1;
     }
 
-    /* 渐变纹理叠加层：增强层次感 */
     body::before {
       content: '';
       position: fixed;
@@ -75,24 +74,17 @@
       max-width: 480px;
     }
 
-    /* 核心：亚克力（毛玻璃）效果优化 */
+    /* 移除亚克力效果：改为实色背景，删除backdrop-filter，调整边框/阴影 */
     .card {
-      /* 基础透明 + 毛玻璃模糊 */
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(18px); /* 增强模糊，更贴近亚克力质感 */
-      -webkit-backdrop-filter: blur(18px); /* 兼容Safari */
+      background: #ffffff; /* 实色白色背景 */
       border-radius: 24px;
       padding: 40px 32px;
-      /* 柔和阴影增强亚克力悬浮感 */
-      box-shadow: 0 8px 40px rgba(150, 120, 255, 0.12), 
-                  0 2px 10px rgba(0, 0, 0, 0.05);
-      /* 半透明白色边框强化亚克力 */
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 40px rgba(150, 120, 255, 0.15);
+      border: 1px solid #f0e8ff; /* 浅紫色边框替代半透边框 */
       text-align: center;
       position: relative;
     }
 
-    /* 渐变光晕边框 */
     .card::before {
       content: '';
       position: absolute;
@@ -146,9 +138,7 @@
       color: #7f6fcf;
       border-radius: 20px;
       font-size: 13px;
-      /* 标签也加轻微亚克力效果 */
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid #f0e8ff; /* 实色边框替代亚克力边框 */
     }
 
     .links {
@@ -168,42 +158,36 @@
       font-size: 15px;
       border: none;
       cursor: pointer;
-      /* 按钮轻微亚克力 */
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid transparent; /* 统一按钮边框样式 */
     }
 
     .btn-bilibili {
-      background: linear-gradient(90deg, rgba(251,114,153,0.8), rgba(255,159,175,0.8));
+      background: linear-gradient(90deg, #fb7299, #ff9faf);
       color: #fff;
     }
 
     .btn-love {
-      background: linear-gradient(90deg, rgba(156,135,255,0.8), rgba(127,111,207,0.8));
+      background: linear-gradient(90deg, #9c87ff, #7f6fcf);
       color: #fff;
     }
 
     .btn-github {
-      background: rgba(51,51,51,0.8);
+      background: #333;
       color: #fff;
     }
 
     .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      /*  hover时增强透明度 */
-      opacity: 0.95;
     }
 
-    /* 音乐播放器亚克力优化 */
+    /* 音乐播放器移除亚克力：改为实色背景 */
     .music-player {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: #ffffff; /* 实色白色背景 */
       border-radius: 16px;
       padding: 16px;
       margin-top: 12px;
-      border: 1px solid rgba(255, 182, 193, 0.5);
+      border: 1px solid #ffd6e0; /* 浅粉色边框替代半透边框 */
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
