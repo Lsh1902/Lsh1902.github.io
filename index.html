@@ -95,15 +95,40 @@
       max-width: 480px;
     }
 
+    /* 核心修改：亚克力材质卡片样式 */
     .card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(12px);
+      /* 亚克力核心属性 */
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); /* 兼容Safari */
       border-radius: 24px;
       padding: 40px 32px;
-      box-shadow: 0 8px 40px rgba(150, 120, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+      /* 亚克力阴影+边框 */
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08), 
+                  0 2px 10px rgba(0, 0, 0, 0.05),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       text-align: center;
       position: relative;
+      /* 亚克力光效 */
+      overflow: hidden;
+    }
+
+    /* 亚克力卡片光效装饰（增强质感） */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0) 60%
+      );
+      pointer-events: none;
+      z-index: 1;
     }
 
     .card::before {
@@ -127,22 +152,32 @@
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #fff;
-      box-shadow: 0 0 20px rgba(255, 154, 214, 0.4);
+      /* 头像亚克力边框 */
+      border: 4px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 20px rgba(255, 154, 214, 0.2),
+                  0 4px 10px rgba(0, 0, 0, 0.05);
       margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .name {
       font-size: 26px;
-      color: #7f6fcf;
+      color: #4a3f8c;
       font-weight: bold;
       margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
     .sign {
       font-size: 15px;
-      color: #999;
+      color: #6b6299;
       margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
     }
 
     .tags {
@@ -151,36 +186,50 @@
       justify-content: center;
       gap: 8px;
       margin-bottom: 28px;
+      position: relative;
+      z-index: 2;
     }
 
     .tag {
       padding: 6px 12px;
-      background: rgba(167,140,255,0.1);
-      color: #7f6fcf;
+      /* 标签亚克力效果 */
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #4a3f8c;
       border-radius: 20px;
       font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
-    /* 新增：背景切换开关样式 */
+    /* 背景切换开关样式 */
     .bg-switch {
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      position: relative;
+      z-index: 2;
     }
     .switch-label {
       font-size: 14px;
-      color: #7f6fcf;
+      color: #4a3f8c;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
     }
     .switch-btn {
       position: relative;
       width: 60px;
       height: 30px;
-      background: rgba(167,140,255,0.2);
+      /* 开关亚克力效果 */
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border-radius: 15px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
     .switch-btn::after {
       content: '';
@@ -190,12 +239,13 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
     }
     .switch-btn.active {
       background: linear-gradient(90deg, #9c87ff, #7f6fcf);
+      border-color: rgba(255, 255, 255, 0.6);
     }
     .switch-btn.active::after {
       transform: translateX(30px);
@@ -206,6 +256,8 @@
       flex-direction: column;
       gap: 12px;
       margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
     }
 
     .btn {
@@ -218,43 +270,60 @@
       font-size: 15px;
       border: none;
       cursor: pointer;
+      position: relative;
+      z-index: 2;
+      /* 按钮亚克力基础 */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
     .btn-bilibili {
-      background: linear-gradient(90deg, #fb7299, #ff9faf);
+      background: linear-gradient(90deg, rgba(251, 114, 153, 0.7), rgba(255, 159, 175, 0.7));
       color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .btn-love {
-      background: linear-gradient(90deg, #9c87ff, #7f6fcf);
+      background: linear-gradient(90deg, rgba(156, 135, 255, 0.7), rgba(127, 111, 207, 0.7));
       color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .btn-github {
-      background: #333;
+      background: rgba(51, 51, 51, 0.7);
       color: #fff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+      opacity: 0.95;
     }
 
-    /* 二次元音乐播放器样式 */
+    /* 二次元音乐播放器样式（亚克力版） */
     .music-player {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
+      /* 播放器亚克力效果 */
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
       border-radius: 16px;
       padding: 16px;
       margin-top: 12px;
-      border: 1px solid rgba(255, 182, 193, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      z-index: 2;
     }
 
     .music-title {
       font-size: 14px;
-      color: #7f6fcf;
+      color: #4a3f8c;
       margin-bottom: 10px;
       font-weight: 500;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
     }
 
     .music-controls {
@@ -270,18 +339,19 @@
       border-radius: 50%;
       background: linear-gradient(45deg, #ff9ed8, #a78cff);
       color: #fff;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.5);
       font-size: 16px;
       cursor: pointer;
       transition: 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .control-btn:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 10px rgba(255, 154, 214, 0.4);
+      box-shadow: 0 0 15px rgba(255, 154, 214, 0.4);
     }
 
     audio {
@@ -314,7 +384,7 @@
         <span class="tag">日常</span>
       </div>
 
-      <!-- 新增：背景切换开关 -->
+      <!-- 背景切换开关 -->
       <div class="bg-switch">
         <span class="switch-label">渐变背景</span>
         <div class="switch-btn" id="bgSwitchBtn"></div>
@@ -329,7 +399,7 @@
 
       <!-- 音乐播放器 -->
       <div class="music-player">
-        <div class="music-title">播放蜜汁BGM</div>
+        <div class="music-title">播放BGM</div>
         <div class="music-controls">
           <button class="control-btn" id="playBtn">▶</button>
         </div>
@@ -369,7 +439,7 @@
       slides[currentSlide].classList.add('active');
     }
 
-    // 新增：背景切换逻辑
+    // 背景切换逻辑
     const bgSwitchBtn = document.getElementById('bgSwitchBtn');
     const bgSlider = document.querySelector('.bg-slider');
     const body = document.body;
