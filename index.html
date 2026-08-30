@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lsh1902の主页</title>
   <meta name="description" content="Lsh1902 的个人主页 - 二次元爱好者，安静看番，认真生活。" />
-  <!-- 预连接外部资源，减少连接建立延迟 -->
+  <!-- 预连接外部资源，减少连接建立延迟（jsDelivr 分发背景与音乐，img.cdn1.vip 仅存头像/图标） -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://img.cdn1.vip" crossorigin />
-  <link rel="preconnect" href="https://cdn.sakurai.dev.cn" crossorigin />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
   <link rel="dns-prefetch" href="https://img.cdn1.vip" />
-  <link rel="dns-prefetch" href="https://cdn.sakurai.dev.cn" />
   <link rel="icon" href="https://img.cdn1.vip/i/69c38360c02af_1774420832.webp" type="image/x-icon">
   <link rel="shortcut icon" href="https://img.cdn1.vip/i/69c38360c02af_1774420832.webp" type="image/x-icon">
   <!-- 预加载首屏关键资源：头像（LCP 元素），仅此一张 -->
@@ -350,7 +350,7 @@
     .music-row {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
     }
     .music-title {
       flex: 1;
@@ -392,6 +392,26 @@
     }
     .control-btn:active {
       transform: scale(0.95);
+    }
+    /* 上一首 / 下一首：幽灵小圆钮 */
+    .control-btn.mini-btn {
+      width: 34px;
+      height: 34px;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink-dim);
+      box-shadow: none;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      --darkreader-inline-bgcolor: rgba(255, 255, 255, 0.08) !important;
+      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+    .control-btn.mini-btn:hover {
+      color: var(--accent);
+      background: rgba(255, 122, 69, 0.14);
+      border-color: rgba(255, 122, 69, 0.4);
+      --darkreader-inline-color: #ff7a45 !important;
+      --darkreader-inline-bgcolor: rgba(255, 122, 69, 0.14) !important;
     }
     /* 均衡器动效 */
     .eq {
@@ -441,12 +461,12 @@
   <!-- 关键：添加data-darkreader-ignore属性，让Dark Reader完全忽略轮播层 -->
   <!-- 性能优化：仅第一张背景图随首屏加载，其余图片懒加载（轮播前一刻才请求） -->
   <div class="bg-slider" data-darkreader-ignore>
-    <div class="bg-slide active" style="background-image: url('https://img.cdn1.vip/i/69c38cd0ab96e_1774423248.webp');"></div>
-    <div class="bg-slide" data-bg="https://img.cdn1.vip/i/69c38cd79f45d_1774423255.webp"></div>
-    <div class="bg-slide" data-bg="https://img.cdn1.vip/i/69c38cd604f8e_1774423254.webp"></div>
-    <div class="bg-slide" data-bg="https://img.cdn1.vip/i/69c38cd1ce7cf_1774423249.webp"></div>
-    <div class="bg-slide" data-bg="https://img.cdn1.vip/i/69c38cd82d0d0_1774423256.webp"></div>
-    <div class="bg-slide" data-bg="https://img.cdn1.vip/i/69c38cd5a6629_1774423253.webp"></div>
+    <div class="bg-slide active" style="background-image: url('https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.webp');"></div>
+    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.webp"></div>
+    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.webp"></div>
+    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.webp"></div>
+    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.webp"></div>
+    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.webp"></div>
   </div>
 
   <div class="container">
@@ -486,53 +506,82 @@
       <div class="music-player">
         <div class="now-label">Now Playing</div>
         <div class="music-row">
+          <button class="control-btn mini-btn" id="prevBtn" aria-label="上一首" title="上一首">⏮</button>
           <button class="control-btn" id="playBtn" aria-label="播放或暂停背景音乐" aria-pressed="false">▶</button>
           <div class="music-title">
-            蜜汁BGM
-            <small>Lsh1902 の选曲</small>
+            <span id="trackName">AIZO</span>
+            <small id="trackMeta">King Gnu · 咒术回战：死灭回游 OP</small>
           </div>
           <div class="eq" aria-hidden="true">
             <span></span><span></span><span></span><span></span>
           </div>
+          <button class="control-btn mini-btn" id="nextBtn" aria-label="下一首" title="下一首">⏭</button>
         </div>
-        <!-- preload="none"：点击播放时才下载 mp3，避免进站即消耗流量 -->
-        <audio id="bgm" loop preload="none">
-          <source src="https://cdn.sakurai.dev.cn/music/daily.mp3" type="audio/mpeg">
-        </audio>
+        <!-- preload="none"：点击播放时才下载音频，避免进站即消耗流量 -->
+        <audio id="bgm" preload="none"></audio>
       </div>
     </div>
   </div>
 
   <script>
-    // 音乐播放逻辑
+    // 音乐播放逻辑 - jsDelivr 托管的 4 首播放列表
     const bgm = document.getElementById('bgm');
     const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const trackName = document.getElementById('trackName');
+    const trackMeta = document.getElementById('trackMeta');
     const eqBars = document.querySelectorAll('.eq span');
+    const MUSIC_BASE = 'https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
+    const playlist = [
+      { src: MUSIC_BASE + 'song1.m4a', name: 'AIZO', meta: 'King Gnu · 咒术回战：死灭回游 OP' },
+      { src: MUSIC_BASE + 'song2.m4a', name: '飞行艇', meta: 'King Gnu' },
+      { src: MUSIC_BASE + 'song3.m4a', name: '一无所有', meta: '尼古喵喵' },
+      { src: MUSIC_BASE + 'song4.m4a', name: '中国人会飞', meta: '揽佬SKAI · Chalky Wong' }
+    ];
+    let current = 0;
     let isPlaying = false;
 
-    playBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        bgm.pause();
-        playBtn.textContent = '▶';
-      } else {
+    function loadTrack(idx, autoplay) {
+      current = (idx + playlist.length) % playlist.length;
+      bgm.src = playlist[current].src;
+      trackName.textContent = playlist[current].name;
+      trackMeta.textContent = playlist[current].meta;
+      if (autoplay) {
         // 部分浏览器对自动播放有限制，捕获 reject 避免报错
         const p = bgm.play();
         if (p && p.catch) p.catch(() => {});
-        playBtn.textContent = '⏸';
       }
-      isPlaying = !isPlaying;
-      playBtn.setAttribute('aria-pressed', String(isPlaying));
+    }
+
+    function setPlaying(state) {
+      isPlaying = state;
+      playBtn.textContent = state ? '⏸' : '▶';
+      playBtn.setAttribute('aria-pressed', String(state));
       // 均衡器随播放状态启停
-      eqBars.forEach((b) => { b.style.animationPlayState = isPlaying ? 'running' : 'paused'; });
+      eqBars.forEach((b) => { b.style.animationPlayState = state ? 'running' : 'paused'; });
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (!bgm.src) { loadTrack(0, true); setPlaying(true); return; }
+      if (isPlaying) {
+        bgm.pause();
+        setPlaying(false);
+      } else {
+        const p = bgm.play();
+        if (p && p.catch) p.catch(() => {});
+        setPlaying(true);
+      }
     });
 
-    // 音乐播放结束时自动复位按钮状态
-    bgm.addEventListener('ended', () => {
-      isPlaying = false;
-      playBtn.textContent = '▶';
-      playBtn.setAttribute('aria-pressed', 'false');
-      eqBars.forEach((b) => { b.style.animationPlayState = 'paused'; });
-    });
+    prevBtn.addEventListener('click', () => { loadTrack(current - 1, true); setPlaying(true); });
+    nextBtn.addEventListener('click', () => { loadTrack(current + 1, true); setPlaying(true); });
+
+    // 一首播完自动切下一首，形成连续播放列表
+    bgm.addEventListener('ended', () => { loadTrack(current + 1, true); setPlaying(true); });
+
+    // 初始载入第一首曲目信息（不自动播放）
+    loadTrack(0, false);
 
     // "我的番单"占位按钮：点击提示施工中，不跳转页面顶部
     const favoriteBtn = document.getElementById('favoriteBtn');

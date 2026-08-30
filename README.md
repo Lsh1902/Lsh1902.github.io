@@ -1,1 +1,46 @@
 # Lsh1902.github.io
+
+Lsh1902 的个人主页（GitHub Pages 静态站点），"磁带放映厅"风格的深色个人名片页。
+
+## 在线地址
+
+<https://Lsh1902.github.io>
+
+## 技术栈
+
+- 纯 HTML / CSS / Vanilla JS，无构建依赖
+- GitHub Pages 托管页面，jsDelivr 加速背景与音乐等静态资源
+
+## 目录结构
+
+```
+index.html        主页（单文件：结构 + 样式 + 脚本）
+assets/
+  bg/             背景轮播图（webp，已由原图压缩）
+  music/          背景音乐（m4a，页面内置 4 首播放列表）
+```
+
+## 静态资源托管
+
+页面背景图与音乐均通过 jsDelivr 从本仓库分发，引用格式：
+
+```
+https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/<路径>
+```
+
+- jsDelivr 单文件上限 20MB
+- 推送新资源后，jsDelivr 缓存约 12 小时自动刷新（紧急更新可拼版本号绕过）
+- 更换背景 / 音乐：替换 `assets/` 下同名文件后推送到 `main` 分支即可
+
+## 背景与音乐说明
+
+- 6 张背景图已用 ffmpeg 压缩为最长边 1920px 的 webp（合计约 1.2MB，原图合计约 11MB）
+- 4 首音乐（m4a）：
+  1. King Gnu《AIZO》（TV动画『咒术回战：死灭回游 前篇』OP）
+  2. King Gnu《飞行艇》
+  3. 尼古喵喵《一无所有》
+  4. 揽佬SKAI《中国人会飞》（feat. Chalky Wong）
+
+## 更新日志
+
+- 2026-08-30：背景图与音乐迁移至 jsDelivr 托管，音乐播放器升级为 4 首播放列表
