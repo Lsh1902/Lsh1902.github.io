@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#11131a" />
   <title>Lsh1902の主页</title>
   <meta name="description" content="Lsh1902 的个人主页 - 二次元爱好者，安静看番，认真生活。" />
   <!-- 预连接外部资源，减少连接建立延迟（jsDelivr 分发背景与音乐，img.cdn1.vip 仅存头像/图标） -->
@@ -16,6 +18,7 @@
   <link rel="preload" as="image" href="https://img.cdn1.vip/i/69c380c30640c_1774420163.jpg" />
   <style>
     :root {
+      color-scheme: dark;    /* 系统深色模式：原生控件使用深色渲染，避免表单/滚动条变亮 */
       --ink: #f4ecdd;        /* 米白主文字 */
       --ink-dim: #b8ad97;    /* 次级文字 */
       --accent: #ff7a45;     /* 暖橙强调 */
@@ -33,6 +36,7 @@
     }
 
     body {
+      color-scheme: dark;    /* 与 :root 保持一致，body 层原生控件同样渲染为深色 */
       font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
       min-height: 100vh;
       min-height: 100dvh;
@@ -407,6 +411,7 @@
     }
     .music-title {
       flex: 1;
+      min-width: 0; /* 允许 flex 收缩，防止长标题把控件挤出卡片 */
       text-align: left;
       font-size: 14px;
       color: var(--ink);
@@ -419,7 +424,16 @@
       font-weight: 400;
       color: var(--ink-dim);
       letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       --darkreader-inline-color: #b8ad97 !important;
+    }
+    #trackName {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .control-btn {
       width: 46px;
@@ -490,6 +504,78 @@
       50% { transform: scaleY(1); }
     }
 
+    /* ===== 播放进度条：轨道 + 滑块 + 时间 ===== */
+    .progress-area {
+      margin-top: 14px;
+    }
+    .progress {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 999px;
+      /* 已播放部分通过 --progress 变量动态填充 */
+      background: linear-gradient(to right, var(--accent-2) 0%, var(--accent-2) var(--progress, 0%), rgba(255, 255, 255, 0.14) var(--progress, 0%));
+      outline: none;
+      cursor: pointer;
+      /* Dark Reader 豁免：保留自绘轨道颜色 */
+      --darkreader-inline-background: linear-gradient(to right, #ffb454 0%, #ffb454 var(--progress, 0%), rgba(255, 255, 255, 0.14) var(--progress, 0%)) !important;
+    }
+    .progress::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      border: 2px solid #16130c;
+      box-shadow: 0 0 10px rgba(255, 180, 84, 0.55);
+      transition: transform 0.15s var(--ease-out);
+      --darkreader-inline-background: #ffb454 !important;
+      --darkreader-inline-border: 2px solid #16130c !important;
+      --darkreader-inline-boxshadow: 0 0 10px rgba(255, 180, 84, 0.55) !important;
+    }
+    .progress::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    .progress:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 180, 84, 0.3);
+    }
+    .progress::-moz-range-track {
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      --darkreader-inline-background: rgba(255, 255, 255, 0.14) !important;
+    }
+    /* Firefox 依据 input value 自动填充已播放部分 */
+    .progress::-moz-range-progress {
+      height: 4px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      --darkreader-inline-background: #ffb454 !important;
+    }
+    .progress::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      border: 2px solid #16130c;
+      box-shadow: 0 0 10px rgba(255, 180, 84, 0.55);
+      --darkreader-inline-background: #ffb454 !important;
+      --darkreader-inline-border: 2px solid #16130c !important;
+      --darkreader-inline-boxshadow: 0 0 10px rgba(255, 180, 84, 0.55) !important;
+    }
+    .progress-time {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--ink-dim);
+      --darkreader-inline-color: #b8ad97 !important;
+    }
+
     /* ===== 完整歌曲列表 ===== */
     .song-list {
       list-style: none;
@@ -539,6 +625,10 @@
     .song-meta {
       font-size: 11px;
       color: var(--ink-dim);
+      max-width: 50%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       --darkreader-inline-color: #b8ad97 !important;
     }
     .song-state {
@@ -556,6 +646,48 @@
       outline: 2px solid var(--accent);
       outline-offset: 3px;
       border-radius: 12px;
+    }
+
+    /* ===== 小屏适配（≤ 480px）：触控友好、内容不溢出 ===== */
+    @media (max-width: 480px) {
+      body { padding: 12px; }
+      /* 卡片：收窄内边距，圆角略减 */
+      .card {
+        padding: 22px 18px 20px;
+        border-radius: 22px;
+      }
+      .card-top { margin: 0 0 14px; }
+      /* 头像：小幅缩小，外环按比例收缩 */
+      .avatar-wrap { width: 104px; height: 104px; margin: 2px auto 14px; }
+      .avatar-ring { inset: -6px; }
+      .avatar { width: 104px; height: 104px; }
+      .name { font-size: 26px; }
+      .sign { font-size: 12px; letter-spacing: 1.5px; margin-bottom: 18px; }
+      .tags { gap: 6px; margin-bottom: 20px; }
+      .tag { padding: 5px 10px 5px 7px; font-size: 12px; }
+      .links { gap: 8px; margin-bottom: 18px; }
+      /* 按钮：保持 ≥44px 触摸高度 */
+      .btn { padding: 13px 14px; min-height: 48px; font-size: 14px; }
+      /* 番单面板：收窄内边距，条目保持可点按高度 */
+      .fav-panel { padding: 14px 12px 6px; }
+      .fav-item { padding: 11px 12px; }
+      /* 播放器：标题字号略降，进度条加粗放大滑块便于触控 */
+      .music-player { padding-top: 14px; }
+      .now-label { margin-bottom: 8px; }
+      .music-title { font-size: 13px; }
+      .music-title small { font-size: 10.5px; }
+      .control-btn { width: 44px; height: 44px; }
+      .control-btn.mini-btn { width: 32px; height: 32px; }
+      .progress { height: 6px; }
+      .progress::-webkit-slider-thumb { width: 20px; height: 20px; }
+      .progress::-moz-range-thumb { width: 20px; height: 20px; }
+      .progress::-moz-range-track { height: 6px; }
+      .progress::-moz-range-progress { height: 6px; }
+      .progress-time { font-size: 10.5px; }
+      /* 歌曲列表：行高增大、元信息收窄，方便点按 */
+      .song-list { gap: 6px; margin-top: 12px; }
+      .song-item { padding: 12px; min-height: 44px; }
+      .song-meta { max-width: 45%; }
     }
 
     /* 动效降级：尊重系统的"减少动态效果"偏好 */
@@ -655,6 +787,15 @@
           </div>
           <button class="control-btn mini-btn" id="nextBtn" aria-label="下一首" title="下一首">⏭</button>
         </div>
+        <!-- 进度条：显示当前时间/总时长，支持点击与拖动 seek（--progress 变量驱动已播放填充） -->
+        <div class="progress-area">
+          <input type="range" class="progress" id="progress" min="0" max="100" value="0" step="0.1"
+                 aria-label="播放进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" />
+          <div class="progress-time">
+            <span id="timeCurrent">0:00</span>
+            <span id="timeTotal">0:00</span>
+          </div>
+        </div>
         <!-- preload="auto"：进入网站即开始加载音频，点击播放时无需等待下载 -->
         <audio id="bgm" preload="auto"></audio>
         <!-- 完整歌曲列表：支持点击任意曲目直接切换 -->
@@ -664,7 +805,8 @@
   </div>
 
   <script>
-    // 音乐播放逻辑 - jsDelivr 托管的 4 首播放列表
+    /* ═══════════ 播放器模块 ═══════════ */
+    // —— 1. 元素引用 ——
     const bgm = document.getElementById('bgm');
     const playBtn = document.getElementById('playBtn');
     const prevBtn = document.getElementById('prevBtn');
@@ -673,6 +815,11 @@
     const trackMeta = document.getElementById('trackMeta');
     const eqBars = document.querySelectorAll('.eq span');
     const songList = document.getElementById('songList');
+    const progress = document.getElementById('progress');
+    const timeCurrent = document.getElementById('timeCurrent');
+    const timeTotal = document.getElementById('timeTotal');
+
+    // —— 2. 播放列表与状态 ——
     const MUSIC_BASE = 'https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
     const playlist = [
       { src: MUSIC_BASE + 'song1.m4a', name: 'AIZO', meta: 'King Gnu · 咒术回战：死灭回游 OP' },
@@ -680,14 +827,49 @@
       { src: MUSIC_BASE + 'song3.m4a', name: '一无所有', meta: '尼古喵喵' },
       { src: MUSIC_BASE + 'song4.m4a', name: '中国人会飞', meta: '揽佬SKAI · Chalky Wong' }
     ];
-    let current = 0;
-    let isPlaying = false;
+    let current = 0;        // 当前曲目索引
+    let isPlaying = false;  // 是否正在播放
+    let isSeeking = false;  // 是否正在拖动进度条（拖动期间暂停 UI 同步）
 
+    // —— 3. 进度条：时间格式化 / 同步 / 重置 / seek ——
+    function formatTime(sec) {
+      if (!isFinite(sec) || sec < 0) sec = 0;
+      sec = Math.floor(sec);
+      return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+    }
+    function updateProgressUI() {
+      const dur = bgm.duration || 0;
+      const cur = bgm.currentTime || 0;
+      const pct = dur ? (cur / dur) * 100 : 0;
+      progress.value = pct;
+      progress.style.setProperty('--progress', pct + '%');
+      progress.setAttribute('aria-valuenow', String(Math.round(pct)));
+      timeCurrent.textContent = formatTime(cur);
+      timeTotal.textContent = formatTime(dur);
+    }
+    function resetProgress() {
+      isSeeking = false;
+      progress.value = 0;
+      progress.style.setProperty('--progress', '0%');
+      progress.setAttribute('aria-valuenow', '0');
+      timeCurrent.textContent = '0:00';
+      timeTotal.textContent = '0:00';
+    }
+    function onSeek() {
+      if (!bgm.duration) return;
+      isSeeking = true;
+      const t = (progress.value / 100) * bgm.duration;
+      bgm.currentTime = t;
+      timeCurrent.textContent = formatTime(t);
+    }
+
+    // —— 4. 曲目加载与播放控制 ——
     function loadTrack(idx, autoplay) {
       current = (idx + playlist.length) % playlist.length;
       bgm.src = playlist[current].src;
       trackName.textContent = playlist[current].name;
       trackMeta.textContent = playlist[current].meta;
+      resetProgress(); // 切换曲目时重置进度条
       if (typeof updateSongActive === 'function') updateSongActive();
       if (autoplay) {
         // 部分浏览器对自动播放有限制，捕获 reject 避免报错
@@ -695,7 +877,6 @@
         if (p && p.catch) p.catch(() => {});
       }
     }
-
     function setPlaying(state) {
       isPlaying = state;
       playBtn.textContent = state ? '⏸' : '▶';
@@ -704,8 +885,7 @@
       eqBars.forEach((b) => { b.style.animationPlayState = state ? 'running' : 'paused'; });
       if (typeof updateSongActive === 'function') updateSongActive();
     }
-
-    playBtn.addEventListener('click', () => {
+    function togglePlay() {
       if (!bgm.src) { loadTrack(0, true); setPlaying(true); return; }
       if (isPlaying) {
         bgm.pause();
@@ -715,15 +895,22 @@
         if (p && p.catch) p.catch(() => {});
         setPlaying(true);
       }
-    });
+    }
 
+    // —— 5. 事件绑定 ——
+    playBtn.addEventListener('click', togglePlay);
     prevBtn.addEventListener('click', () => { loadTrack(current - 1, true); setPlaying(true); });
     nextBtn.addEventListener('click', () => { loadTrack(current + 1, true); setPlaying(true); });
-
     // 一首播完自动切下一首，形成连续播放列表
     bgm.addEventListener('ended', () => { loadTrack(current + 1, true); setPlaying(true); });
+    // 元数据就绪 / 播放过程中实时同步进度条（拖动期间跳过）
+    bgm.addEventListener('loadedmetadata', updateProgressUI);
+    bgm.addEventListener('timeupdate', () => { if (!isSeeking) updateProgressUI(); });
+    // 点击 / 拖动进度条 seek；松开时结束拖动状态
+    progress.addEventListener('input', onSeek);
+    progress.addEventListener('change', () => { isSeeking = false; });
 
-    // 初始载入第一首曲目信息（不自动播放，但立即开始加载音频）
+    // —— 6. 初始化：载入第一首曲目信息（不自动播放，但立即开始加载音频） ——
     loadTrack(0, false);
     bgm.load();
 
