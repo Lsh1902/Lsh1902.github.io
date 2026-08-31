@@ -332,9 +332,9 @@
     .btn-bilibili .idx, .btn-bilibili .arrow { color: rgba(255, 255, 255, 0.85); }
     .btn-bilibili:hover .arrow { color: #fff; }
 
-    /* ===== 番单面板 ===== */
+    /* ===== 番单面板：紧贴「我的番单」按钮下方展开 ===== */
     .fav-panel {
-      margin: -4px 0 22px;
+      margin: 2px 0 14px;
       padding: 16px 14px 8px;
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.05);
@@ -570,10 +570,10 @@
 
 <body>
   <!-- 关键：添加data-darkreader-ignore属性，让Dark Reader完全忽略轮播层 -->
-  <!-- 性能优化：仅第一张背景图随首屏加载，其余图片懒加载（轮播前一刻才请求） -->
+  <!-- 性能优化：第一张背景图已移除，所有背景图统一懒加载（轮播前一刻才请求） -->
   <div class="bg-slider" data-darkreader-ignore>
-    <div class="bg-slide active" style="background-image: url('https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.webp');"></div>
-    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.webp"></div>
+    <!-- 第一张背景图已移除，轮播从 bg2 开始 -->
+    <div class="bg-slide active" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.webp"></div>
     <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.webp"></div>
     <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.webp"></div>
     <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.webp"></div>
@@ -609,37 +609,36 @@
         <a href="javascript:void(0)" class="btn btn-love" id="favoriteBtn" aria-expanded="false" aria-controls="favPanel">
           <span class="idx">02</span><span class="label">我的番单</span><span class="arrow">→</span>
         </a>
+        <!-- 番单面板：点击「我的番单」展开，面板紧跟按钮下方 -->
+        <div class="fav-panel" id="favPanel" hidden>
+          <div class="fav-group">
+            <div class="fav-group-title">魔法禁书目录系列</div>
+            <a href="https://www.bilibili.com/bangumi/play/ss963" target="_blank" rel="noopener" class="fav-item">
+              <span class="fav-idx">01</span><span class="fav-name">魔法禁书目录 第一季</span><span class="arrow">→</span>
+            </a>
+            <a href="https://www.bilibili.com/bangumi/play/ss964" target="_blank" rel="noopener" class="fav-item">
+              <span class="fav-idx">02</span><span class="fav-name">魔法禁书目录 Ⅱ</span><span class="arrow">→</span>
+            </a>
+            <a href="https://www.bilibili.com/bangumi/play/ss25617" target="_blank" rel="noopener" class="fav-item">
+              <span class="fav-idx">03</span><span class="fav-name">魔法禁书目录 Ⅲ</span><span class="arrow">→</span>
+            </a>
+          </div>
+          <div class="fav-group">
+            <div class="fav-group-title">某科学的超电磁炮系列</div>
+            <a href="https://www.bilibili.com/bangumi/play/ss425" target="_blank" rel="noopener" class="fav-item">
+              <span class="fav-idx">04</span><span class="fav-name">某科学的超电磁炮</span><span class="arrow">→</span>
+            </a>
+            <a href="https://www.bilibili.com/bangumi/play/ss427" target="_blank" rel="noopener" class="fav-item">
+              <span class="fav-idx">05</span><span class="fav-name">某科学的超电磁炮 S</span><span class="arrow">→</span>
+            </a>
+            <a href="https://www.bilibili.com/bangumi/play/ss29325" target="_blank" rel="noopener" class="fav-item">
+              <span class="fav-idx">06</span><span class="fav-name">某科学的超电磁炮 T</span><span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
         <a href="https://github.com/Lsh1902" target="_blank" rel="noopener" class="btn btn-github">
           <span class="idx">03</span><span class="label">GitHub</span><span class="arrow">→</span>
         </a>
-      </div>
-
-      <!-- 番单面板：点击「我的番单」展开 -->
-      <div class="fav-panel" id="favPanel" hidden>
-        <div class="fav-group">
-          <div class="fav-group-title">魔法禁书目录系列</div>
-          <a href="https://www.bilibili.com/bangumi/play/ss963" target="_blank" rel="noopener" class="fav-item">
-            <span class="fav-idx">01</span><span class="fav-name">魔法禁书目录 第一季</span><span class="arrow">→</span>
-          </a>
-          <a href="https://www.bilibili.com/bangumi/play/ss964" target="_blank" rel="noopener" class="fav-item">
-            <span class="fav-idx">02</span><span class="fav-name">魔法禁书目录 Ⅱ</span><span class="arrow">→</span>
-          </a>
-          <a href="https://www.bilibili.com/bangumi/play/ss25617" target="_blank" rel="noopener" class="fav-item">
-            <span class="fav-idx">03</span><span class="fav-name">魔法禁书目录 Ⅲ</span><span class="arrow">→</span>
-          </a>
-        </div>
-        <div class="fav-group">
-          <div class="fav-group-title">某科学的超电磁炮系列</div>
-          <a href="https://www.bilibili.com/bangumi/play/ss425" target="_blank" rel="noopener" class="fav-item">
-            <span class="fav-idx">04</span><span class="fav-name">某科学的超电磁炮</span><span class="arrow">→</span>
-          </a>
-          <a href="https://www.bilibili.com/bangumi/play/ss427" target="_blank" rel="noopener" class="fav-item">
-            <span class="fav-idx">05</span><span class="fav-name">某科学的超电磁炮 S</span><span class="arrow">→</span>
-          </a>
-          <a href="https://www.bilibili.com/bangumi/play/ss29325" target="_blank" rel="noopener" class="fav-item">
-            <span class="fav-idx">06</span><span class="fav-name">某科学的超电磁炮 T</span><span class="arrow">→</span>
-          </a>
-        </div>
       </div>
 
       <div class="music-player">
@@ -656,8 +655,8 @@
           </div>
           <button class="control-btn mini-btn" id="nextBtn" aria-label="下一首" title="下一首">⏭</button>
         </div>
-        <!-- preload="none"：点击播放时才下载音频，避免进站即消耗流量 -->
-        <audio id="bgm" preload="none"></audio>
+        <!-- preload="auto"：进入网站即开始加载音频，点击播放时无需等待下载 -->
+        <audio id="bgm" preload="auto"></audio>
         <!-- 完整歌曲列表：支持点击任意曲目直接切换 -->
         <ul class="song-list" id="songList" aria-label="歌曲列表"></ul>
       </div>
@@ -724,8 +723,9 @@
     // 一首播完自动切下一首，形成连续播放列表
     bgm.addEventListener('ended', () => { loadTrack(current + 1, true); setPlaying(true); });
 
-    // 初始载入第一首曲目信息（不自动播放）
+    // 初始载入第一首曲目信息（不自动播放，但立即开始加载音频）
     loadTrack(0, false);
+    bgm.load();
 
     // "我的番单"按钮：展开/收起番单面板（魔法禁书目录 & 超电磁炮系列，附B站链接）
     const favoriteBtn = document.getElementById('favoriteBtn');
@@ -831,8 +831,7 @@
     }
 
     if (slides.length > 0) {
-      // 第一张背景已内联，直接激活并预缓存下一张
-      slides[0].classList.add('active');
+      // 第一张背景图已移除，从 bg2 懒加载开始轮播
       goTo(0);
       startSlider();
       // 页面在后台时暂停轮播，减少无谓的图片加载与性能消耗
