@@ -8,9 +8,9 @@
   <title>Lsh1902の主页</title>
   <meta name="description" content="Lsh1902 的个人主页 - 二次元爱好者，安静看番，认真生活。" />
   <!-- 预连接外部资源，减少连接建立延迟（jsDelivr 分发背景与音乐，img.cdn1.vip 仅存头像/图标） -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://img.cdn1.vip" crossorigin />
-  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+  <link rel="dns-prefetch" href="https://fastly.jsdelivr.net" />
   <link rel="dns-prefetch" href="https://img.cdn1.vip" />
   <link rel="icon" href="https://img.cdn1.vip/i/69c38360c02af_1774420832.webp" type="image/x-icon">
   <link rel="shortcut icon" href="https://img.cdn1.vip/i/69c38360c02af_1774420832.webp" type="image/x-icon">
@@ -704,12 +704,12 @@
   <!-- 关键：添加data-darkreader-ignore属性，让Dark Reader完全忽略轮播层 -->
   <!-- 性能优化：所有背景图统一 data-bg 懒加载（轮播前一刻才请求），避免无 data-bg 被覆盖为 url('undefined') -->
   <div class="bg-slider" data-darkreader-ignore>
-    <div class="bg-slide active" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.webp"></div>
-    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.webp"></div>
-    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.webp"></div>
-    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.webp"></div>
-    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.webp"></div>
-    <div class="bg-slide" data-bg="https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.webp"></div>
+    <div class="bg-slide active" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.webp"></div>
   </div>
 
   <div class="container">
@@ -820,7 +820,7 @@
     const timeTotal = document.getElementById('timeTotal');
 
     // —— 2. 播放列表与状态 ——
-    const MUSIC_BASE = 'https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
+    const MUSIC_BASE = 'https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
     const playlist = [
       { src: MUSIC_BASE + 'song1.m4a', name: 'AIZO', meta: 'King Gnu · 咒术回战：死灭回游 OP' },
       { src: MUSIC_BASE + 'song2.m4a', name: '飞行艇', meta: 'King Gnu' },
