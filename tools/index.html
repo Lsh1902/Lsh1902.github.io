@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b0704">
+<title>DATA TRANSLATOR · 编码解码工具箱</title>
+<meta name="description" content="Base64 / URL / Hash / 二维码 编码解码工具箱，所有运算均在浏览器本地完成，数据不离开设备。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ══════════ 顶栏 ══════════ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <span class="brand-glyph">⇄</span>
+      </div>
+      <div class="brand-text">
+        <h1 class="brand-title">DATA&nbsp;TRANSLATOR</h1>
+        <p class="brand-sub">编码 / 解码 / 哈希 / 二维码 工具箱</p>
+      </div>
+    </div>
+    <div class="sys-status">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span class="status-label">SYSTEM&nbsp;READY</span>
+      <span class="status-note">LOCAL&nbsp;ONLY</span>
+    </div>
+  </header>
+
+  <!-- ══════════ 工具导航 ══════════ -->
+  <nav class="toolnav" role="tablist" aria-label="工具选择">
+    <button class="toolnav-item is-active" role="tab" aria-selected="true" data-tool="base64">
+      <span class="toolnav-code">01</span> Base64
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="url">
+      <span class="toolnav-code">02</span> URL
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="hash">
+      <span class="toolnav-code">03</span> Hash
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="qr">
+      <span class="toolnav-code">04</span> 二维码
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="timestamp">
+      <span class="toolnav-code">05</span> 时间戳
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="json">
+      <span class="toolnav-code">06</span> JSON
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="case">
+      <span class="toolnav-code">07</span> 大小写
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="radix">
+      <span class="toolnav-code">08</span> 进制
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="unicode">
+      <span class="toolnav-code">09</span> Unicode
+    </button>
+    <button class="toolnav-item" role="tab" aria-selected="false" data-tool="image">
+      <span class="toolnav-code">10</span> 图片
+    </button>
+  </nav>
+
+  <main class="stage">
+
+    <!-- ────── Base64 ────── -->
+    <section class="panel is-active" data-panel="base64" aria-label="Base64 工具">
+      <div class="panel-head">
+        <h2 class="panel-title">BASE64</h2>
+        <p class="panel-desc">在二进制安全文本与 ASCII 之间互转。支持中文与 UTF-8，可切换编码方向。</p>
+      </div>
+      <div class="ctrl-row">
+        <div class="seg" role="group" aria-label="编码方向">
+          <button class="seg-btn is-active" data-direction="encode">编码 ENCODE</button>
+          <button class="seg-btn" data-direction="decode">解码 DECODE</button>
+        </div>
+        <div class="ctrl-side">
+          <label class="switch-line">
+            <input type="checkbox" id="b64-urlsafe">
+            <span class="switch"></span>
+            <span class="switch-label">URL-SAFE 变体</span>
+          </label>
+          <span class="char-count" data-count-for="b64-input">0 chars</span>
+        </div>
+      </div>
+      <div class="xfer-grid">
+        <div class="field">
+          <div class="field-tag">INPUT</div>
+          <textarea id="b64-input" class="code-area" spellcheck="false" placeholder="在此输入要处理的文本…"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-tag">OUTPUT</div>
+          <textarea id="b64-output" class="code-area" readonly spellcheck="false" placeholder="结果将实时显示在此处"></textarea>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="b64-output">复制结果</button>
+        <button class="btn btn-ghost" data-clear="b64-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── URL ────── -->
+    <section class="panel" data-panel="url" aria-label="URL 工具">
+      <div class="panel-head">
+        <h2 class="panel-title">URL</h2>
+        <p class="panel-desc">对文本进行百分号编码 / 解码。适用于 query 参数与路径片段。</p>
+      </div>
+      <div class="ctrl-row">
+        <div class="seg" role="group" aria-label="编码方向">
+          <button class="seg-btn is-active" data-direction="encode">编码 ENCODE</button>
+          <button class="seg-btn" data-direction="decode">解码 DECODE</button>
+        </div>
+        <div class="ctrl-side">
+          <label class="switch-line">
+            <input type="checkbox" id="url-component">
+            <span class="switch"></span>
+            <span class="switch-label">COMPONENT 模式（保留保留字符）</span>
+          </label>
+          <span class="char-count" data-count-for="url-input">0 chars</span>
+        </div>
+      </div>
+      <div class="xfer-grid">
+        <div class="field">
+          <div class="field-tag">INPUT</div>
+          <textarea id="url-input" class="code-area" spellcheck="false" placeholder="在此输入要处理的文本…"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-tag">OUTPUT</div>
+          <textarea id="url-output" class="code-area" readonly spellcheck="false" placeholder="结果将实时显示在此处"></textarea>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="url-output">复制结果</button>
+        <button class="btn btn-ghost" data-clear="url-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── Hash ────── -->
+    <section class="panel" data-panel="hash" aria-label="Hash 工具">
+      <div class="panel-head">
+        <h2 class="panel-title">HASH</h2>
+        <p class="panel-desc">使用 Web Crypto 原生算法计算摘要（SHA 系列），MD5 由内置实现完成。全程离线。</p>
+      </div>
+      <div class="field">
+        <div class="field-tag">INPUT</div>
+        <textarea id="hash-input" class="code-area" spellcheck="false" placeholder="在此输入要计算哈希的文本…"></textarea>
+      </div>
+      <div class="hash-out" id="hash-out" aria-live="polite">
+        <div class="hash-empty">输入文本后，摘要将逐项显示在此处</div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="hash-out">复制全部摘要</button>
+        <button class="btn btn-ghost" data-clear="hash-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── 二维码 ────── -->
+    <section class="panel" data-panel="qr" aria-label="二维码工具">
+      <div class="panel-head">
+        <h2 class="panel-title">QR&nbsp;GENERATOR</h2>
+        <p class="panel-desc">将文本 / 链接生成为二维码，可调尺寸与纠错等级。生成过程完全在本地进行。</p>
+      </div>
+      <div class="qr-layout">
+        <div class="field qr-input-field">
+          <div class="field-tag">CONTENT</div>
+          <textarea id="qr-input" class="code-area" spellcheck="false" placeholder="在此输入链接或文本，如 https://example.com"></textarea>
+          <div class="qr-options">
+            <label class="opt">尺寸
+              <select id="qr-size">
+                <option value="256">256</option>
+                <option value="384" selected>384</option>
+                <option value="512">512</option>
+                <option value="768">768</option>
+              </select>
+            </label>
+            <label class="opt">纠错等级
+              <select id="qr-ecl">
+                <option value="L">L</option>
+                <option value="M" selected>M</option>
+                <option value="Q">Q</option>
+                <option value="H">H</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="qr-output">
+          <div class="field-tag">PREVIEW</div>
+          <div class="qr-canvas-wrap" id="qr-canvas-wrap">
+            <canvas id="qr-canvas" hidden></canvas>
+            <img id="qr-img" alt="生成的二维码" hidden>
+            <div class="qr-empty">输入内容以生成二维码</div>
+          </div>
+          <div class="action-row">
+            <button class="btn" data-copy="qr-img">复制图片</button>
+            <button class="btn btn-ghost" id="qr-download">下载 PNG</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────── 时间戳 ────── -->
+    <section class="panel" data-panel="timestamp" aria-label="时间戳工具">
+      <div class="panel-head">
+        <h2 class="panel-title">TIMESTAMP</h2>
+        <p class="panel-desc">时间戳与日期时间互转。输入数字时间戳（秒或毫秒），或输入可解析的日期时间文本，自动识别并双向换算。</p>
+      </div>
+      <div class="ctrl-row">
+        <button class="btn btn-ghost" id="ts-now" type="button">插入当前时间戳</button>
+        <span class="char-count">自动识别秒 / 毫秒</span>
+      </div>
+      <div class="field">
+        <div class="field-tag">INPUT</div>
+        <textarea id="ts-input" class="code-area code-area-short" spellcheck="false" placeholder="例如 1725000000 或 2026-08-30 12:00:00"></textarea>
+      </div>
+      <div class="readout-grid" id="ts-out" aria-live="polite">
+        <div class="readout-empty">输入时间戳或日期时间后，换算结果将逐项显示在此处</div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="ts-out">复制全部结果</button>
+        <button class="btn btn-ghost" data-clear="ts-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── JSON ────── -->
+    <section class="panel" data-panel="json" aria-label="JSON 工具">
+      <div class="panel-head">
+        <h2 class="panel-title">JSON</h2>
+        <p class="panel-desc">格式化、压缩或校验 JSON 文本，解析失败时定位到具体行列。</p>
+      </div>
+      <div class="ctrl-row">
+        <div class="seg" role="group" aria-label="JSON 操作">
+          <button class="seg-btn is-active" data-json-mode="format">格式化 FORMAT</button>
+          <button class="seg-btn" data-json-mode="minify">压缩 MINIFY</button>
+          <button class="seg-btn" data-json-mode="validate">校验 VALIDATE</button>
+        </div>
+        <div class="ctrl-side">
+          <label class="opt">缩进
+            <select id="json-indent">
+              <option value="2" selected>2 空格</option>
+              <option value="4">4 空格</option>
+              <option value="tab">TAB</option>
+            </select>
+          </label>
+          <span class="char-count" data-count-for="json-input">0 chars</span>
+        </div>
+      </div>
+      <div class="xfer-grid">
+        <div class="field">
+          <div class="field-tag">INPUT</div>
+          <textarea id="json-input" class="code-area" spellcheck="false" placeholder="在此输入 JSON 文本…"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-tag">OUTPUT</div>
+          <textarea id="json-output" class="code-area" readonly spellcheck="false" placeholder="结果将实时显示在此处"></textarea>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="json-output">复制结果</button>
+        <button class="btn btn-ghost" data-clear="json-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── 大小写 ────── -->
+    <section class="panel" data-panel="case" aria-label="大小写转换">
+      <div class="panel-head">
+        <h2 class="panel-title">CASE</h2>
+        <p class="panel-desc">文本大小写与命名格式转换，一键切换 UPPER / lower / Title / camel / snake / kebab 等。</p>
+      </div>
+      <div class="field">
+        <div class="field-tag">INPUT</div>
+        <textarea id="case-input" class="code-area" spellcheck="false" placeholder="在此输入要转换的文本…"></textarea>
+      </div>
+      <div class="case-btns" role="group" aria-label="转换格式">
+        <button class="case-btn is-active" data-case="upper">UPPER</button>
+        <button class="case-btn" data-case="lower">lower</button>
+        <button class="case-btn" data-case="title">Title Case</button>
+        <button class="case-btn" data-case="camel">camelCase</button>
+        <button class="case-btn" data-case="snake">snake_case</button>
+        <button class="case-btn" data-case="kebab">kebab-case</button>
+        <button class="case-btn" data-case="constant">CONSTANT_CASE</button>
+        <button class="case-btn" data-case="sentence">Sentence case</button>
+      </div>
+      <div class="field">
+        <div class="field-tag">OUTPUT</div>
+        <textarea id="case-output" class="code-area" readonly spellcheck="false" placeholder="转换结果将实时显示在此处"></textarea>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="case-output">复制结果</button>
+        <button class="btn btn-ghost" data-clear="case-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── 进制 ────── -->
+    <section class="panel" data-panel="radix" aria-label="进制转换">
+      <div class="panel-head">
+        <h2 class="panel-title">RADIX</h2>
+        <p class="panel-desc">在二进制、八进制、十进制、十六进制之间互转，基于 BigInt，支持任意大整数。</p>
+      </div>
+      <div class="ctrl-row">
+        <label class="opt">输入进制
+          <select id="radix-in">
+            <option value="2">二进制 2</option>
+            <option value="8">八进制 8</option>
+            <option value="10" selected>十进制 10</option>
+            <option value="16">十六进制 16</option>
+          </select>
+        </label>
+        <span class="char-count" data-count-for="radix-input">0 chars</span>
+      </div>
+      <div class="field">
+        <div class="field-tag">INPUT</div>
+        <textarea id="radix-input" class="code-area code-area-short" spellcheck="false" placeholder="在此输入要转换的数字…"></textarea>
+      </div>
+      <div class="readout-grid" id="radix-out" aria-live="polite">
+        <div class="readout-empty">输入数字后，各进制结果将逐项显示在此处</div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="radix-out">复制全部结果</button>
+        <button class="btn btn-ghost" data-clear="radix-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── Unicode ────── -->
+    <section class="panel" data-panel="unicode" aria-label="Unicode 转义工具">
+      <div class="panel-head">
+        <h2 class="panel-title">UNICODE</h2>
+        <p class="panel-desc">文本与 \uXXXX 转义序列互转，适用于 JSON 字符串、前端源码等场景。</p>
+      </div>
+      <div class="ctrl-row">
+        <div class="seg" role="group" aria-label="转义方向">
+          <button class="seg-btn is-active" data-direction="escape">转义 ESCAPE</button>
+          <button class="seg-btn" data-direction="unescape">反转义 UNESCAPE</button>
+        </div>
+        <span class="char-count" data-count-for="uni-input">0 chars</span>
+      </div>
+      <div class="xfer-grid">
+        <div class="field">
+          <div class="field-tag">INPUT</div>
+          <textarea id="uni-input" class="code-area" spellcheck="false" placeholder="在此输入要处理的文本…"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-tag">OUTPUT</div>
+          <textarea id="uni-output" class="code-area" readonly spellcheck="false" placeholder="结果将实时显示在此处"></textarea>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="btn" data-copy="uni-output">复制结果</button>
+        <button class="btn btn-ghost" data-clear="uni-input">清空</button>
+      </div>
+    </section>
+
+    <!-- ────── 图片 ────── -->
+    <section class="panel" data-panel="image" aria-label="图片工具">
+      <div class="panel-head">
+        <h2 class="panel-title">IMAGE</h2>
+        <p class="panel-desc">图片与 Base64 数据互转：将图片文件编码为 Data URL，或将 Base64 还原为图片下载。全程本地。</p>
+      </div>
+      <div class="qr-layout">
+        <div class="field">
+          <div class="field-tag">IMAGE → BASE64</div>
+          <div class="drop-zone" id="img-drop" tabindex="0" role="button" aria-label="选择或拖入图片">
+            <input type="file" id="img-file" accept="image/*" hidden>
+            <span class="drop-icon" aria-hidden="true">＋</span>
+            <span class="drop-text">点击选择或拖入图片</span>
+            <span class="drop-hint">支持 PNG / JPG / WebP / GIF / SVG</span>
+          </div>
+          <div class="img-preview-wrap" id="img-preview-wrap" hidden>
+            <img id="img-preview" alt="图片预览">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-tag">BASE64</div>
+          <textarea id="img-b64" class="code-area" readonly spellcheck="false" placeholder="图片的 Base64 数据将显示在此处"></textarea>
+          <div class="action-row" style="margin-top:12px">
+            <button class="btn" data-copy="img-b64">复制 Base64</button>
+            <button class="btn btn-ghost" id="img-clear">清除</button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-divider" aria-hidden="true"></div>
+      <div class="qr-layout">
+        <div class="field">
+          <div class="field-tag">BASE64 → IMAGE</div>
+          <textarea id="b64-img-input" class="code-area code-area-short" spellcheck="false" placeholder="粘贴 Base64 或 Data URL 以还原图片…"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-tag">PREVIEW</div>
+          <div class="qr-canvas-wrap" id="b64-img-wrap">
+            <img id="b64-img" alt="还原的图片" hidden>
+            <div class="qr-empty">粘贴 Base64 后在此预览</div>
+          </div>
+          <div class="action-row" style="margin-top:12px">
+            <button class="btn" id="b64-img-download">下载还原图片</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <span class="foot-led" aria-hidden="true"></span>
+    <p>所有运算均在本机浏览器完成，数据不会上传任何服务器。纯静态 · 无追踪 · 可离线使用</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://fastly.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
