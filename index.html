@@ -704,12 +704,12 @@
   <!-- 关键：添加data-darkreader-ignore属性，让Dark Reader完全忽略轮播层 -->
   <!-- 性能优化：所有背景图统一 data-bg 懒加载（轮播前一刻才请求），避免无 data-bg 被覆盖为 url('undefined') -->
   <div class="bg-slider" data-darkreader-ignore>
-    <div class="bg-slide active" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.webp"></div>
+    <div class="bg-slide active" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.bin" data-mime="image/webp"></div>
   </div>
 
   <div class="container">
@@ -771,6 +771,9 @@
         <a href="https://github.com/Lsh1902" target="_blank" rel="noopener" class="btn btn-github">
           <span class="idx">03</span><span class="label">GitHub</span><span class="arrow">→</span>
         </a>
+        <a href="/tools/" target="_blank" rel="noopener" class="btn btn-tools">
+          <span class="idx">04</span><span class="label">工具箱</span><span class="arrow">→</span>
+        </a>
       </div>
 
       <div class="music-player">
@@ -819,13 +822,32 @@
     const timeCurrent = document.getElementById('timeCurrent');
     const timeTotal = document.getElementById('timeTotal');
 
+    // —— 1.5 资源加解密：XOR 逐字节解码（密钥与 scripts/xor_crypto.py 完全一致）——
+    const XOR_KEY = 'Lsh1902-Tape-XOR-Key!@#2026';
+    // 将加密字节流按密钥逐字节异或，还原为原始媒体数据
+    function xorDecode(buf) {
+      const key = new TextEncoder().encode(XOR_KEY);
+      const out = new Uint8Array(buf.byteLength);
+      for (let i = 0; i < buf.byteLength; i++) {
+        out[i] = buf[i] ^ key[i % key.length];
+      }
+      return out;
+    }
+    // fetch 加密资源 -> XOR 解码 -> Blob 对象 URL，供 <audio> / <img> 使用（背景音乐/轮播均走此通道）
+    async function fetchDecoded(url, mime) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('fetch failed ' + res.status);
+      const raw = new Uint8Array(await res.arrayBuffer());
+      return URL.createObjectURL(new Blob([xorDecode(raw)], { type: mime }));
+    }
+
     // —— 2. 播放列表与状态 ——
     const MUSIC_BASE = 'https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
     const playlist = [
-      { src: MUSIC_BASE + 'song1.m4a', name: 'AIZO', meta: 'King Gnu · 咒术回战：死灭回游 OP' },
-      { src: MUSIC_BASE + 'song2.m4a', name: '飞行艇', meta: 'King Gnu' },
-      { src: MUSIC_BASE + 'song3.m4a', name: '一无所有', meta: '尼古喵喵' },
-      { src: MUSIC_BASE + 'song4.m4a', name: '中国人会飞', meta: '揽佬SKAI · Chalky Wong' }
+      { src: MUSIC_BASE + 'song1.bin', name: 'AIZO', meta: 'King Gnu · 咒术回战：死灭回游 OP' },
+      { src: MUSIC_BASE + 'song2.bin', name: '飞行艇', meta: 'King Gnu' },
+      { src: MUSIC_BASE + 'song3.bin', name: '一无所有', meta: '尼古喵喵' },
+      { src: MUSIC_BASE + 'song4.bin', name: '中国人会飞', meta: '揽佬SKAI · Chalky Wong' }
     ];
     let current = 0;        // 当前曲目索引
     let isPlaying = false;  // 是否正在播放
@@ -863,18 +885,28 @@
       timeCurrent.textContent = formatTime(t);
     }
 
-    // —— 4. 曲目加载与播放控制 ——
-    function loadTrack(idx, autoplay) {
+    // —— 4. 曲目加载与播放控制（加密资源：fetch -> XOR 解码 -> Blob URL 赋给 <audio>） ——
+    let trackLoadSeq = 0;     // loadTrack 递增序号，用于丢弃过期的异步加载结果（快速切歌时不串台）
+    async function loadTrack(idx, autoplay) {
       current = (idx + playlist.length) % playlist.length;
-      bgm.src = playlist[current].src;
-      trackName.textContent = playlist[current].name;
-      trackMeta.textContent = playlist[current].meta;
+      const item = playlist[current];
+      trackName.textContent = item.name;
+      trackMeta.textContent = item.meta;
       resetProgress(); // 切换曲目时重置进度条
       if (typeof updateSongActive === 'function') updateSongActive();
-      if (autoplay) {
-        // 部分浏览器对自动播放有限制，捕获 reject 避免报错
-        const p = bgm.play();
-        if (p && p.catch) p.catch(() => {});
+      const seq = ++trackLoadSeq;
+      try {
+        const url = await fetchDecoded(item.src, 'audio/mp4');
+        if (seq !== trackLoadSeq) return;   // 期间又切了歌，丢弃本次结果
+        if (bgm.src && bgm.src.startsWith('blob:')) URL.revokeObjectURL(bgm.src); // 释放上一首的 Blob
+        bgm.src = url;
+        if (autoplay) {
+          // 部分浏览器对自动播放有限制，捕获 reject 避免报错
+          const p = bgm.play();
+          if (p && p.catch) p.catch(() => {});
+        }
+      } catch (e) {
+        // 资源加载/解码失败：静默，页面其余功能不受影响
       }
     }
     function setPlaying(state) {
@@ -910,9 +942,8 @@
     progress.addEventListener('input', onSeek);
     progress.addEventListener('change', () => { isSeeking = false; });
 
-    // —— 6. 初始化：载入第一首曲目信息（不自动播放，但立即开始加载音频） ——
+    // —— 6. 初始化：载入第一首曲目信息（不自动播放，但立即 fetch 解密并开始加载音频） ——
     loadTrack(0, false);
-    bgm.load();
 
     // "我的番单"按钮：展开/收起番单面板（魔法禁书目录 & 超电磁炮系列，附B站链接）
     const favoriteBtn = document.getElementById('favoriteBtn');
@@ -977,32 +1008,40 @@
     }
     renderPlaylist();
 
-    // 背景轮播逻辑（懒加载优化版）
+    // 背景轮播逻辑（懒加载 + 加密资源解码版）
     const slides = document.querySelectorAll('.bg-slide');
+    const bgCache = {};          // 已解码背景 Blob URL 缓存，避免重复请求
     let currentSlide = 0;
     let timer = null;
     const SLIDE_INTERVAL = 5000;
 
-    function applyBg(idx) {
+    // fetch 加密背景 -> XOR 解码 -> Blob URL（带缓存）
+    async function loadBg(src) {
+      if (bgCache[src]) return bgCache[src];
+      const url = await fetchDecoded(src, 'image/webp');
+      bgCache[src] = url;
+      return url;
+    }
+
+    // 异步应用背景：仅对带 data-bg 的幻灯片设置，避免无 data-bg 被覆盖成 url('undefined')
+    async function applyBg(idx) {
       const s = slides[idx];
-      // 仅对带 data-bg 的幻灯片设置背景，避免无 data-bg 被覆盖成 url('undefined')
-      if (s && s.dataset.bg && !s.dataset.loaded) {
-        s.style.backgroundImage = "url('" + s.dataset.bg + "')";
+      if (!s || !s.dataset.bg || s.dataset.loaded) return;
+      try {
+        const url = await loadBg(s.dataset.bg);
+        if (s.dataset.loaded) return;   // 等待期间已处理
+        s.style.backgroundImage = "url('" + url + "')";
         s.dataset.loaded = '1';
-      }
+      } catch (e) { /* 加载失败静默：保持无背景，页面不崩 */ }
     }
 
     function goTo(idx) {
       applyBg(idx);
       slides.forEach((s, i) => s.classList.toggle('active', i === idx));
       currentSlide = idx;
-      // 预先缓存下一张，切换时无需等待下载
-      const next = (idx + 1) % slides.length;
-      const nextEl = slides[next];
-      if (nextEl && nextEl.dataset.bg && !nextEl.dataset.loaded) {
-        const img = new Image();
-        img.src = nextEl.dataset.bg;
-      }
+      // 预先解码缓存下一张，切换时无需等待
+      const next = slides[(idx + 1) % slides.length];
+      if (next && next.dataset.bg && !next.dataset.loaded) loadBg(next.dataset.bg);
     }
 
     function nextSlide() {
