@@ -8,9 +8,9 @@
   <title>Lsh1902の主页</title>
   <meta name="description" content="Lsh1902 的个人主页 - 二次元爱好者，安静看番，认真生活。" />
   <!-- 预连接外部资源，减少连接建立延迟（jsDelivr 分发背景与音乐，img.cdn1.vip 仅存头像/图标） -->
-  <link rel="preconnect" href="https://fastly.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin />
   <link rel="preconnect" href="https://img.cdn1.vip" crossorigin />
-  <link rel="dns-prefetch" href="https://fastly.jsdelivr.net" />
+  <link rel="dns-prefetch" href="https://gcore.jsdelivr.net" />
   <link rel="dns-prefetch" href="https://img.cdn1.vip" />
   <link rel="icon" href="https://img.cdn1.vip/i/69c38360c02af_1774420832.webp" type="image/x-icon">
   <link rel="shortcut icon" href="https://img.cdn1.vip/i/69c38360c02af_1774420832.webp" type="image/x-icon">
@@ -840,12 +840,12 @@
   <!-- 关键：添加data-darkreader-ignore属性，让Dark Reader完全忽略轮播层 -->
   <!-- 性能优化：所有背景图统一 data-bg 懒加载（轮播前一刻才请求），避免无 data-bg 被覆盖为 url('undefined') -->
   <div class="bg-slider" data-darkreader-ignore>
-    <div class="bg-slide active" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.bin" data-mime="image/webp"></div>
+    <div class="bg-slide active" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.bin" data-mime="image/webp"></div>
   </div>
 
   <div class="container">
@@ -954,7 +954,7 @@
   </div>
 
   <!-- 公告渲染库：marked via fastly jsDelivr（站内统一镜像源），加载失败时由内置迷你渲染器兜底 -->
-  <script src="https://fastly.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://gcore.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 
   <script>
     /* ═══════════ 播放器模块 ═══════════ */
@@ -991,7 +991,7 @@
     }
 
     // —— 2. 播放列表与状态 ——
-    const MUSIC_BASE = 'https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
+    const MUSIC_BASE = 'https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/music/';
     const playlist = [
       { src: MUSIC_BASE + 'song1.bin', name: 'AIZO', meta: 'King Gnu · 咒术回战：死灭回游 OP' },
       { src: MUSIC_BASE + 'song2.bin', name: '飞行艇', meta: 'King Gnu' },
@@ -1232,7 +1232,7 @@
         if (arrow) arrow.textContent = opening ? '收起 ▾' : '展开 ▸';
       });
 
-      const MD_URL = 'https://fastly.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/announcements.md?t=' + Date.now();
+      const MD_URL = 'https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/announcements.md?t=' + Date.now();
 
       // 迷你 Markdown 渲染器：marked 不可用时的降级（先转义 HTML，支持标题/加粗/斜体/链接/代码/列表/引用/代码块/分隔线）
       function escapeHtml(s) {

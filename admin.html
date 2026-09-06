@@ -245,13 +245,13 @@
   </div>
 
   <!-- 公告渲染库：marked via fastly jsDelivr（与站内资源统一镜像源），加载失败时用内置迷你渲染器兜底 -->
-  <script src="https://fastly.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://gcore.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <script>
     'use strict';
     const $ = (id) => document.getElementById(id);
     const REPO = 'Lsh1902/Lsh1902.github.io';
     const FILE = 'announcements.md';
-    const MD_URL = 'https://fastly.jsdelivr.net/gh/' + REPO + '@main/' + FILE + '?t=' + Date.now();
+    const MD_URL = 'https://gcore.jsdelivr.net/gh/' + REPO + '@main/' + FILE + '?t=' + Date.now();
     const DEFAULT_DATE = new Date().toISOString().slice(0, 10);
 
     // —— 数据模型：items = [{date, title, body}] ——
