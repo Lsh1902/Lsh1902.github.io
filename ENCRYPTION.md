@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 8f5334e0ead4af502ae294458a90237a_e04f6101aa1411f187fd525400826444
+    ReservedCode1: CZnIZXreUethRqftCnuImJh6LFRzB89+F4N4t9TH0BZRbT4yESQBVZYW+GIlC+nLWvCeEOXfanwncG8BG+vmNkOTkQyaN4c2NY6ejPbk89B4EGrF6gyEEkpAA2R1xjfc49plBFStrzyoxBK7s5BqxWx6DyJr7OON+QvwsOzEk9TwuHNrYZwAwwQNwCc=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 8f5334e0ead4af502ae294458a90237a_e04f6101aa1411f187fd525400826444
+    ReservedCode2: CZnIZXreUethRqftCnuImJh6LFRzB89+F4N4t9TH0BZRbT4yESQBVZYW+GIlC+nLWvCeEOXfanwncG8BG+vmNkOTkQyaN4c2NY6ejPbk89B4EGrF6gyEEkpAA2R1xjfc49plBFStrzyoxBK7s5BqxWx6DyJr7OON+QvwsOzEk9TwuHNrYZwAwwQNwCc=
+---
+
 # 媒体资源加密说明（Anti-DMCA / 防直链抓取）
 
 主页背景图与背景音乐存储于公开 GitHub 仓库并通过 jsDelivr CDN 分发。
@@ -60,3 +71,4 @@ python scripts/xor_crypto.py encrypt assets/bg/  assets/bg_enc/
 - 本方案为**轻量混淆**，前端密钥必然存在于公开 JS 中，熟悉前端的人仍可提取密钥还原。
   目标是**提高直接下载成本、阻断“点开 URL 即得原图/原音频”的举证与抓取路径**，并非强加密。
 - 建议同时配合：jsDelivr 仅作分发不提供目录列表、仓库不开 issue 附件等常规手段。
+*（内容由AI生成，仅供参考）*

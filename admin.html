@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#11131a" />
+  <title>公告管理后台 · Lsh1902</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: #f4ecdd;
+      --ink-dim: #b8ad97;
+      --accent: #ff7a45;
+      --accent-2: #ffb454;
+      --panel: rgba(17, 19, 26, 0.92);
+      --panel-border: rgba(255, 255, 255, 0.1);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+      background:
+        radial-gradient(120% 80% at 50% 0%, rgba(255, 122, 69, 0.10) 0%, transparent 55%),
+        linear-gradient(180deg, #14161d 0%, #0c0d12 100%);
+      min-height: 100vh;
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      padding: 24px 16px 48px;
+    }
+    .shell { width: 100%; max-width: 1080px; }
+    header.top { margin-bottom: 18px; }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    h1::before {
+      content: '📢 ';
+    }
+    .desc { color: var(--ink-dim); font-size: 13px; margin: 6px 0 14px; }
+
+    .card {
+      background: var(--panel);
+      backdrop-filter: blur(18px) saturate(1.1);
+      -webkit-backdrop-filter: blur(18px) saturate(1.1);
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      padding: 14px 16px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .toolbar-spacer { flex: 1; }
+    button {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    button:hover { background: rgba(255, 122, 69, 0.16); border-color: rgba(255, 122, 69, 0.4); }
+    button.primary { background: rgba(255, 122, 69, 0.18); border-color: rgba(255, 122, 69, 0.5); }
+    button.danger { color: #ff8a80; border-color: rgba(255, 138, 128, 0.4); }
+    button.danger:hover { background: rgba(255, 138, 128, 0.14); }
+    input[type="password"] {
+      font-family: inherit;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      width: 280px;
+      max-width: 100%;
+    }
+    input::placeholder, textarea::placeholder { color: rgba(184, 173, 151, 0.6); }
+
+    .gh { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+    .gh .note { font-size: 12px; color: var(--ink-dim); }
+    #ghStatus { font-size: 12px; color: var(--accent-2); }
+
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      align-items: start;
+    }
+    @media (max-width: 800px) { .cols { grid-template-columns: 1fr; } }
+    .col h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--accent-2);
+      margin-bottom: 10px;
+    }
+
+    /* 条目列表 */
+    .item-card {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .item-head { display: flex; gap: 8px; margin-bottom: 8px; }
+    .item-head input {
+      font-family: inherit;
+      font-size: 12.5px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 7px 10px;
+    }
+    .item-date { width: 118px; flex: none; }
+    .item-title { flex: 1; }
+    .item-body {
+      width: 100%;
+      min-height: 72px;
+      resize: vertical;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    textarea { width: 100%; font-family: inherit; }
+    #mdText {
+      min-height: 420px;
+      resize: vertical;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .md-hint { font-size: 12px; color: var(--ink-dim); margin-top: 8px; }
+    .item-foot { margin-top: 8px; display: flex; justify-content: flex-end; }
+    #btnAdd { width: 100%; margin-top: 2px; }
+
+    .preview-box {
+      max-height: 640px;
+      overflow-y: auto;
+      font-size: 13.5px;
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .preview-box h1, .preview-box h2, .preview-box h3 { margin: 12px 0 6px; line-height: 1.3; }
+    .preview-box h2 { color: var(--accent-2); font-size: 17px; }
+    .preview-box h3 { font-size: 15px; }
+    .preview-box hr { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 12px 0; }
+    .preview-box ul, .preview-box ol { margin: 6px 0; padding-left: 22px; }
+    .preview-box li { margin: 3px 0; }
+    .preview-box blockquote {
+      margin: 8px 0;
+      padding: 4px 12px;
+      border-left: 3px solid var(--accent-2);
+      color: var(--ink-dim);
+    }
+    .preview-box code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      background: rgba(255, 122, 69, 0.14);
+      color: var(--accent-2);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 12px;
+    }
+    .preview-box pre {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px;
+      overflow-x: auto;
+    }
+    .preview-box pre code { background: none; padding: 0; }
+    .preview-box a { color: var(--accent-2); }
+    .preview-box table { border-collapse: collapse; margin: 8px 0; }
+    .preview-box th, .preview-box td { border: 1px solid rgba(255,255,255,0.16); padding: 4px 10px; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <h1>公告管理后台</h1>
+      <p class="desc">维护 announcements.md —— 支持条目增删改 / 实时预览 / 导出复制下载 / 可选直提交 GitHub Contents API</p>
+      <div class="card">
+        <div class="toolbar">
+          <button id="btnFromRepo" type="button">从仓库拉取</button>
+          <button id="btnToggleMode" type="button">切到 MD 原文</button>
+          <span class="toolbar-spacer"></span>
+          <button id="btnExport" type="button">导出完整 MD</button>
+          <button id="btnCopy" type="button">一键复制</button>
+          <button id="btnDownload" type="button">下载 .md</button>
+        </div>
+        <div class="gh">
+          <input id="tokenInput" type="password" placeholder="GitHub Personal Token（可选，仅存本机浏览器）" autocomplete="off" />
+          <button id="btnPush" type="button" class="primary">提交到 GitHub</button>
+          <span class="note">未填 Token 时请导出/复制内容，再到仓库手动更新 announcements.md</span>
+          <span id="ghStatus"></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="cols">
+      <section class="col editor card" id="editorCol">
+        <h2 id="modeLabel">公告条目（日期 + 标题 + 正文）</h2>
+
+        <div id="itemView">
+          <div id="items"></div>
+          <button id="btnAdd" type="button">+ 新增条目</button>
+        </div>
+
+        <div id="mdView" hidden>
+          <textarea id="mdText" spellcheck="false"
+            placeholder="# 每条公告以 ## 日期 标题 开头，其余为该公告正文 Markdown&#10;# 预览会自动跟随输入实时更新"></textarea>
+          <div class="md-hint">贴入/编辑完整 announcements.md 后，点「切到条目模式」可解析回条目列表。</div>
+        </div>
+      </section>
+
+      <section class="col preview card">
+        <h2>实时预览</h2>
+        <div id="preview" class="preview-box">
+          <p style="color:var(--ink-dim)">（开始编辑后此处实时渲染开头为 ## 的公告。尚未输入内容。）</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 公告渲染库：marked via fastly jsDelivr（与站内资源统一镜像源），加载失败时用内置迷你渲染器兜底 -->
+  <script src="https://fastly.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script>
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const REPO = 'Lsh1902/Lsh1902.github.io';
+    const FILE = 'announcements.md';
+    const MD_URL = 'https://fastly.jsdelivr.net/gh/' + REPO + '@main/' + FILE + '?t=' + Date.now();
+    const DEFAULT_DATE = new Date().toISOString().slice(0, 10);
+
+    // —— 数据模型：items = [{date, title, body}] ——
+    let items = [];
+    let mdMode = false; // true 表示正在"MD 原文"模式
+
+    // —— 解析 / 序列化 ——
+    function parseMdToItems(md) {
+      const arr = [];
+      let cur = null;
+      for (const line of md.split(/\r?\n/)) {
+        const m = line.match(/^##\s+(.*)$/);
+        if (m) {
+          if (cur) arr.push(cur);
+          cur = { rawTitle: m[1].trim(), body: [] };
+        } else if (cur) {
+          cur.body.push(line);
+        }
+      }
+      if (cur) arr.push(cur);
+      return arr.map((it) => {
+        let date = '', title = it.rawTitle;
+        const dm = it.rawTitle.match(/^(\d{4}-\d{2}-\d{2})\s*(.*)$/);
+        if (dm) { date = dm[1]; title = dm[2] || date; }
+        while (it.body.length && /^\s*$/.test(it.body[0])) it.body.shift();
+        while (it.body.length && /^\s*$/.test(it.body[it.body.length - 1])) it.body.pop();
+        return { date, title, body: it.body.join('\n') };
+      }).filter((it) => it.title || it.body.trim());
+    }
+    function itemsToMd(arr) {
+      return arr.map((it) => {
+        const title = (it.date ? it.date + ' ' : '') + (it.title || '');
+        return '## ' + title.trim() + '\n\n' + (it.body || '').trim() + '\n';
+      }).join('\n');
+    }
+
+    // —— Markdown 渲染（marked + 内置兜底） ——
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+    function miniRender(src) {
+      const lines = escapeHtml(src).split(/\n/);
+      const out = [];
+      let inList = null, inCode = false, codeBuf = [];
+      const flushList = () => { if (inList) { out.push('</' + inList + '>'); inList = null; } };
+      for (const raw of lines) {
+        let line = raw;
+        if (inCode) {
+          if (/^\s*```\s*$/.test(line)) { inCode = false; out.push('<pre><code>' + codeBuf.join('\n') + '</code></pre>'); codeBuf = []; }
+          else codeBuf.push(line);
+          continue;
+        }
+        if (/^\s*```/.test(line)) { flushList(); inCode = true; codeBuf = []; continue; }
+        line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                   .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                   .replace(/`([^`]+)`/g, '<code>$1</code>')
+                   .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+        const h = line.match(/^(#{1,6})\s+(.*)$/);
+        if (h) { flushList(); out.push('<h' + h[1].length + '>' + h[2] + '</h' + h[1].length + '>'); continue; }
+        const q = line.match(/^>\s?(.*)$/);
+        if (q) { flushList(); out.push('<blockquote>' + q[1] + '</blockquote>'); continue; }
+        // 注意：行先被 escapeHtml 转义，因此引用符 ">" 已变为 "&gt;"
+        const q2 = line.match(/^&gt;\s?(.*)$/);
+        if (q2) { flushList(); out.push('<blockquote>' + q2[1] + '</blockquote>'); continue; }
+        const ul = line.match(/^\s*[-*+]\s+(.*)$/);
+        if (ul) { if (inList !== 'ul') { flushList(); out.push('<ul>'); inList = 'ul'; } out.push('<li>' + ul[1] + '</li>'); continue; }
+        const ol = line.match(/^\s*\d+\.\s+(.*)$/);
+        if (ol) { if (inList !== 'ol') { flushList(); out.push('<ol>'); inList = 'ol'; } out.push('<li>' + ol[1] + '</li>'); continue; }
+        flushList();
+        if (/^\s*---+/.test(line)) { out.push('<hr>'); continue; }
+        if (/^\s*$/.test(line)) { continue; }
+        out.push('<p>' + line + '</p>');
+      }
+      if (inCode) out.push('<pre><code>' + codeBuf.join('\n') + '</code></pre>');
+      flushList();
+      return out.join('\n');
+    }
+    function renderMd(src) {
+      if (typeof marked !== 'undefined' && marked && marked.parse) {
+        try { return marked.parse(src); } catch (e) { /* 兜底 */ }
+      }
+      return miniRender(src);
+    }
+
+    // —— 当前输出的完整 MD（按当前模式取源） ——
+    function currentMd() {
+      return mdMode ? $('mdText').value : itemsToMd(items);
+    }
+
+    // —— 预览 ——
+    function renderPreview() {
+      const md = currentMd();
+      const box = $('preview');
+      if (!md.trim()) {
+        box.innerHTML = '<p style="color:var(--ink-dim)">（暂无内容，开始输入后此处实时预览）</p>';
+        return;
+      }
+      box.innerHTML = renderMd(md);
+    }
+
+    // —— 条目视图渲染 ——
+    function renderItems() {
+      const wrap = $('items');
+      wrap.innerHTML = '';
+      if (!items.length) {
+        const empty = document.createElement('p');
+        empty.style.color = 'var(--ink-dim)';
+        empty.style.fontSize = '12.5px';
+        empty.textContent = '当前没有公告条目，点下方「+ 新增条目」创建。';
+        wrap.appendChild(empty);
+      }
+      items.forEach((it, idx) => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+
+        const head = document.createElement('div');
+        head.className = 'item-head';
+        const dateIn = document.createElement('input');
+        dateIn.className = 'item-date';
+        dateIn.type = 'text';
+        dateIn.placeholder = '日期 YYYY-MM-DD';
+        dateIn.value = it.date || '';
+        const titleIn = document.createElement('input');
+        titleIn.className = 'item-title';
+        titleIn.type = 'text';
+        titleIn.placeholder = '标题';
+        titleIn.value = it.title || '';
+        head.appendChild(dateIn);
+        head.appendChild(titleIn);
+
+        const bodyIn = document.createElement('textarea');
+        bodyIn.className = 'item-body';
+        bodyIn.placeholder = '公告正文（Markdown）';
+        bodyIn.value = it.body || '';
+
+        const foot = document.createElement('div');
+        foot.className = 'item-foot';
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'danger';
+        del.textContent = '删除';
+        del.addEventListener('click', () => {
+          items.splice(idx, 1);
+          renderItems(); renderPreview();
+        });
+        foot.appendChild(del);
+
+        const sync = () => { items[idx] = { date: dateIn.value, title: titleIn.value, body: bodyIn.value }; renderPreview(); };
+        dateIn.addEventListener('input', sync);
+        titleIn.addEventListener('input', sync);
+        bodyIn.addEventListener('input', sync);
+
+        card.appendChild(head);
+        card.appendChild(bodyIn);
+        card.appendChild(foot);
+        wrap.appendChild(card);
+      });
+    }
+
+    // —— 模式切换 ——
+    function toggleMode() {
+      mdMode = !mdMode;
+      $('itemView').hidden = mdMode;
+      $('mdView').hidden = !mdMode;
+      $('modeLabel').textContent = mdMode ? 'Markdown 原文（## 日期 标题 为一条公告）' : '公告条目（日期 + 标题 + 正文）';
+      $('btnToggleMode').textContent = mdMode ? '切到条目模式' : '切到 MD 原文';
+      if (mdMode) {
+        $('mdText').value = itemsToMd(items);
+      } else {
+        items = parseMdToItems($('mdText').value);
+        renderItems();
+      }
+      renderPreview();
+    }
+
+    // —— 从仓库拉取 ——
+    async function loadFromRepo() {
+      const st = $('ghStatus');
+      st.textContent = '正在从仓库拉取…';
+      try {
+        const res = await fetch(MD_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const md = await res.text();
+        if (mdMode) $('mdText').value = md; else { items = parseMdToItems(md); renderItems(); }
+        renderPreview();
+        st.textContent = '已拉取仓库最新公告。';
+      } catch (e) {
+        st.textContent = '拉取失败：' + String((e && e.message) || e);
+      }
+    }
+
+    // —— 导出 / 复制 / 下载 ——
+    function exportMd() {
+      const md = currentMd();
+      if (mdMode) {
+        // 已是最新 MD 原文
+      } else {
+        $('mdText').value = md;
+      }
+      const st = $('ghStatus');
+      st.textContent = '已生成完整 announcements.md（见 MD 原文区）。';
+      return md;
+    }
+    function copyMd() {
+      const md = currentMd();
+      const done = () => { $('ghStatus').textContent = '已复制到剪贴板。'; };
+      const fail = () => { $('ghStatus').textContent = '复制失败，请手动选择内容复制。'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(md).then(done, fail);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = md; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { fail(); }
+        document.body.removeChild(ta);
+      }
+    }
+    function downloadMd() {
+      const md = currentMd();
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'announcements.md';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      $('ghStatus').textContent = '已开始下载 announcements.md。';
+    }
+
+    // —— 可选：直提交 GitHub Contents API ——
+    async function pushToGitHub() {
+      const token = $('tokenInput').value.trim();
+      const st = $('ghStatus');
+      if (!token) {
+        st.textContent = '未填 Token，无法直提交。请导出/复制 announcements.md 内容，到仓库手动更新。';
+        return;
+      }
+      const md = currentMd();
+      st.textContent = '正在提交…';
+      try {
+        const headers = {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        };
+        // 先取当前文件 sha
+        let sha = null;
+        try {
+          const g = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, { headers });
+          if (g.ok) {
+            const j = await g.json();
+            sha = j.sha;
+          } else if (g.status !== 404) {
+            throw new Error('读取文件失败 HTTP ' + g.status);
+          }
+        } catch (e) { throw e; }
+        const payload = {
+          message: 'docs: 更新公告 announcements.md（后台直提交）',
+          content: btoa(unescape(encodeURIComponent(md)))
+        };
+        if (sha) payload.sha = sha;
+        const put = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+          method: 'PUT',
+          headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }),
+          body: JSON.stringify(payload)
+        });
+        if (!put.ok) {
+          const err = await put.json().catch(() => ({}));
+          st.textContent = '提交失败 HTTP ' + put.status + '：' + String((err && err.message) || '');
+          return;
+        }
+        st.textContent = '提交成功！已更新仓库 announcements.md。';
+      } catch (e) {
+        st.textContent = '提交出错：' + String((e && e.message) || e);
+      }
+    }
+
+    // —— 初始化 ——
+    $('btnAdd').addEventListener('click', () => {
+      items.push({ date: DEFAULT_DATE, title: '新公告', body: '' });
+      renderItems(); renderPreview();
+    });
+    $('btnFromRepo').addEventListener('click', loadFromRepo);
+    $('btnToggleMode').addEventListener('click', toggleMode);
+    $('btnExport').addEventListener('click', exportMd);
+    $('btnCopy').addEventListener('click', copyMd);
+    $('btnDownload').addEventListener('click', downloadMd);
+    $('btnPush').addEventListener('click', pushToGitHub);
+    $('mdText').addEventListener('input', renderPreview);
+
+    // 回填已保存的 Token（仅存本机 localStorage）
+    try {
+      const saved = localStorage.getItem('lsh_announce_token');
+      if (saved) $('tokenInput').value = saved;
+    } catch (e) { /* 忽略 */ }
+    $('tokenInput').addEventListener('change', () => {
+      try {
+        const v = $('tokenInput').value.trim();
+        if (v) localStorage.setItem('lsh_announce_token', v);
+        else localStorage.removeItem('lsh_announce_token');
+      } catch (e) { /* 忽略 */ }
+    });
+
+    // 初始：从仓库拉一次，作为示例数据
+    loadFromRepo();
+  </script>
+</body>
+</html>
