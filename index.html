@@ -640,11 +640,11 @@
 
     audio { display: none; }
 
-    /* ===== 公告栏（Markdown）：与播放器同款深色卡片，多条可折叠/滚动 ===== */
+    /* ===== 公告栏（Markdown）：置于卡片顶部，与播放器同款深色风格，多条可折叠/滚动 ===== */
     .announce {
-      margin-top: 22px;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      margin: 0 0 4px;
+      padding: 0 0 12px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
       text-align: left;
     }
     .announce-toggle {
@@ -850,6 +850,17 @@
 
   <div class="container">
     <div class="card">
+
+      <!-- 公告栏：从仓库根 announcements.md 拉取并渲染 Markdown，支持多条折叠/滚动 -->
+      <div class="announce" id="announcePanel">
+        <button class="announce-toggle" id="announceToggle" aria-expanded="false" aria-controls="announceBody" type="button">
+          <span>📢 公告</span><span class="arrow">展开 ▸</span>
+        </button>
+        <div class="announce-body" id="announceBody" hidden>
+          <div class="announce-loading">加载公告中…</div>
+        </div>
+      </div>
+
       <div class="card-top">
         <span class="rec">REC</span>
         <span class="no">NO.1902</span>
@@ -939,16 +950,6 @@
         <audio id="bgm" preload="auto"></audio>
         <!-- 完整歌曲列表：支持点击任意曲目直接切换 -->
         <ul class="song-list" id="songList" aria-label="歌曲列表"></ul>
-      </div>
-
-      <!-- 公告栏：从仓库根 announcements.md 拉取并渲染 Markdown，支持多条折叠/滚动 -->
-      <div class="announce" id="announcePanel">
-        <button class="announce-toggle" id="announceToggle" aria-expanded="false" aria-controls="announceBody" type="button">
-          <span>📢 公告</span><span class="arrow">展开 ▸</span>
-        </button>
-        <div class="announce-body" id="announceBody" hidden>
-          <div class="announce-loading">加载公告中…</div>
-        </div>
       </div>
     </div>
   </div>

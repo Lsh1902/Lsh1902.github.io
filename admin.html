@@ -90,6 +90,26 @@
     .gh .note { font-size: 12px; color: var(--ink-dim); }
     #ghStatus { font-size: 12px; color: var(--accent-2); }
 
+    /* 高级：GitHub 直提交（需 Token）折叠区 */
+    details.gh-advanced { margin-top: 12px; }
+    details.gh-advanced summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      color: var(--ink-dim);
+      padding: 4px 2px;
+    }
+    details.gh-advanced summary::-webkit-details-marker { display: none; }
+    details.gh-advanced summary::before { content: '▸ '; color: var(--accent-2); }
+    details.gh-advanced[open] summary::before { content: '▾ '; }
+    details.gh-advanced[open] {
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      margin-top: 14px;
+      padding-top: 8px;
+    }
+    details.gh-advanced .gh { margin-top: 4px; }
+
     .cols {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -200,7 +220,7 @@
   <div class="shell">
     <header class="top">
       <h1>公告管理后台</h1>
-      <p class="desc">维护 announcements.md —— 支持条目增删改 / 实时预览 / 导出复制下载 / 可选直提交 GitHub Contents API</p>
+      <p class="desc">维护 announcements.md —— 条目增删改 / 实时预览 / 导出复制下载 / 通过 Cloudflare Worker 发布（无需 GitHub Token）</p>
       <div class="card">
         <div class="toolbar">
           <button id="btnFromRepo" type="button">从仓库拉取</button>
@@ -211,11 +231,19 @@
           <button id="btnDownload" type="button">下载 .md</button>
         </div>
         <div class="gh">
-          <input id="tokenInput" type="password" placeholder="GitHub Personal Token（可选，仅存本机浏览器）" autocomplete="off" />
-          <button id="btnPush" type="button" class="primary">提交到 GitHub</button>
-          <span class="note">未填 Token 时请导出/复制内容，再到仓库手动更新 announcements.md</span>
+          <input id="keyInput" type="password" placeholder="管理密钥 Admin Key（可选，首次填写后保存在本机浏览器）" autocomplete="off" />
+          <button id="btnPushWorker" type="button" class="primary">通过 Worker 发布</button>
+          <span class="note">发布走 Cloudflare Worker（lsh-admin-api），无需 GitHub Token；Token 与密钥均由服务端安全持有。公告读取源不变，仍为仓库 announcements.md。</span>
           <span id="ghStatus"></span>
         </div>
+        <details class="gh-advanced" id="ghAdvanced">
+          <summary>高级：GitHub 直提交（需 Token，备用通道）</summary>
+          <div class="gh">
+            <input id="tokenInput" type="password" placeholder="GitHub Personal Token（可选，仅存本机浏览器）" autocomplete="off" />
+            <button id="btnPush" type="button">提交到 GitHub</button>
+            <span class="note">备用：绕过 Worker 直接调用 GitHub Contents API。未填 Token 时请导出/复制内容，再到仓库手动更新 announcements.md。</span>
+          </div>
+        </details>
       </div>
     </header>
 
@@ -252,6 +280,7 @@
     const REPO = 'Lsh1902/Lsh1902.github.io';
     const FILE = 'announcements.md';
     const MD_URL = 'https://gcore.jsdelivr.net/gh/' + REPO + '@main/' + FILE + '?t=' + Date.now();
+    const WORKER_API = 'https://admin-api.lsh1902.de5.net/api/announce';
     const DEFAULT_DATE = new Date().toISOString().slice(0, 10);
 
     // —— 数据模型：items = [{date, title, body}] ——
@@ -482,6 +511,38 @@
       $('ghStatus').textContent = '已开始下载 announcements.md。';
     }
 
+    // —— 主通道：通过 Cloudflare Worker 发布（无需 GitHub Token） ——
+    async function pushViaWorker() {
+      const key = $('keyInput').value.trim();
+      const st = $('ghStatus');
+      const md = currentMd();
+      if (!md.trim()) {
+        st.textContent = '内容为空，未发布。';
+        return;
+      }
+      if (!key) {
+        st.textContent = '请填写管理密钥 Admin Key（向站点管理员索取）。';
+        return;
+      }
+      st.textContent = '正在通过 Worker 发布…';
+      try {
+        const res = await fetch(WORKER_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key },
+          body: JSON.stringify({ content: md })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          st.textContent = '发布失败：' + String((data && data.error) || ('HTTP ' + res.status));
+          return;
+        }
+        const shortSha = data.commit && data.commit.sha ? data.commit.sha.slice(0, 7) : '';
+        st.textContent = '发布成功！已通过 Worker 更新仓库 announcements.md' + (shortSha ? '（commit ' + shortSha + '）' : '') + '。';
+      } catch (e) {
+        st.textContent = '发布出错：' + String((e && e.message) || e) + '（如为 CORS/网络错误，请确认 Worker 已部署且域名可访问）';
+      }
+    }
+
     // —— 可选：直提交 GitHub Contents API ——
     async function pushToGitHub() {
       const token = $('tokenInput').value.trim();
@@ -541,13 +602,25 @@
     $('btnCopy').addEventListener('click', copyMd);
     $('btnDownload').addEventListener('click', downloadMd);
     $('btnPush').addEventListener('click', pushToGitHub);
+    $('btnPushWorker').addEventListener('click', pushViaWorker);
     $('mdText').addEventListener('input', renderPreview);
 
-    // 回填已保存的 Token（仅存本机 localStorage）
+    // 回填已保存的 Admin Key / GitHub Token（仅存本机 localStorage）
+    try {
+      const savedKey = localStorage.getItem('lsh_announce_admin_key');
+      if (savedKey) $('keyInput').value = savedKey;
+    } catch (e) { /* 忽略 */ }
     try {
       const saved = localStorage.getItem('lsh_announce_token');
       if (saved) $('tokenInput').value = saved;
     } catch (e) { /* 忽略 */ }
+    $('keyInput').addEventListener('change', () => {
+      try {
+        const v = $('keyInput').value.trim();
+        if (v) localStorage.setItem('lsh_announce_admin_key', v);
+        else localStorage.removeItem('lsh_announce_admin_key');
+      } catch (e) { /* 忽略 */ }
+    });
     $('tokenInput').addEventListener('change', () => {
       try {
         const v = $('tokenInput').value.trim();
