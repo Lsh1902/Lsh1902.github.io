@@ -1,6 +1,11 @@
 name = "lsh-admin-api"
 main = "src/index.js"
 compatibility_date = "2025-08-01"
+workers_dev = true
+
+routes = [
+  { pattern = "admin-api.lsh1902.de5.net", zone_id = "36440f099ef6f019c4d480515a62f6ae" }
+]
 
 # 部署时在 Cloudflare Dashboard（Workers -> lsh-admin-api -> Settings -> Variables）
 # 或 `wrangler secret put ADMIN_KEY` / `wrangler secret put GITHUB_TOKEN` 注入：
