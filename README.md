@@ -45,6 +45,7 @@ https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/<路径>
 
 > 规则：仅保留最近一周（7 天）内的记录，超期条目自动删除。
 
+- 2026-09-07：新增手机端专用背景集（bg1m~bg6m.bin，竖屏 webp XOR 加密）；主页按视口 ≤768px 自动切换竖屏背景、桌面保持横屏原集，视口跨断点即时切换
 - 2026-09-07：公告管理 Worker（lsh-admin-api）启用 workers.dev 并绑定自定义域名 admin-api.lsh1902.de5.net（admin.html 发布通道指向该域名）
 - 2026-09-07：公告栏移至主页卡片最顶部；新增 Cloudflare Worker 公告发布后端（admin-api/），admin.html 无需再填 GitHub Token，经 Worker 校验 Admin Key 后代为更新 announcements.md
 - 2026-09-07：全站静态资源 CDN 镜像由 fastly 统一切换至 gcore.jsdelivr.net（fastly 对 gh 路径 301 到 raw 且被 DNS 屏蔽不可达）

@@ -840,12 +840,12 @@
   <!-- 关键：添加data-darkreader-ignore属性，让Dark Reader完全忽略轮播层 -->
   <!-- 性能优化：所有背景图统一 data-bg 懒加载（轮播前一刻才请求），避免无 data-bg 被覆盖为 url('undefined') -->
   <div class="bg-slider" data-darkreader-ignore>
-    <div class="bg-slide active" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.bin" data-mime="image/webp"></div>
-    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.bin" data-mime="image/webp"></div>
+    <div class="bg-slide active" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1.bin" data-bg-m="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg1m.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2.bin" data-bg-m="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg2m.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3.bin" data-bg-m="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg3m.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4.bin" data-bg-m="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg4m.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5.bin" data-bg-m="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg5m.bin" data-mime="image/webp"></div>
+    <div class="bg-slide" data-bg="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6.bin" data-bg-m="https://gcore.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/assets/bg/bg6m.bin" data-mime="image/webp"></div>
   </div>
 
   <div class="container">
@@ -1164,6 +1164,12 @@
     let currentSlide = 0;
     let timer = null;
     const SLIDE_INTERVAL = 5000;
+    // 移动端背景集：视口 <=768px 时使用竖屏集 data-bg-m，桌面端保持横屏集 data-bg
+    const mobileBgMq = window.matchMedia('(max-width: 768px)');
+    const isMobileBg = () => mobileBgMq.matches;
+    function bgSrcFor(s) {
+      return (isMobileBg() && s.dataset.bgM) ? s.dataset.bgM : s.dataset.bg;
+    }
 
     // fetch 加密背景 -> XOR 解码 -> Blob URL（带缓存）
     async function loadBg(src) {
@@ -1173,15 +1179,17 @@
       return url;
     }
 
-    // 异步应用背景：仅对带 data-bg 的幻灯片设置，避免无 data-bg 被覆盖成 url('undefined')
+    // 异步应用背景：仅对带背景 URL 的幻灯片设置，避免无背景被覆盖成 url('undefined')
     async function applyBg(idx) {
       const s = slides[idx];
-      if (!s || !s.dataset.bg || s.dataset.loaded) return;
+      if (!s) return;
+      const src = bgSrcFor(s);
+      if (!src || s.dataset.loaded === src) return;
       try {
-        const url = await loadBg(s.dataset.bg);
-        if (s.dataset.loaded) return;   // 等待期间已处理
+        const url = await loadBg(src);
+        if (s.dataset.loaded === src) return;   // 等待期间已处理
         s.style.backgroundImage = "url('" + url + "')";
-        s.dataset.loaded = '1';
+        s.dataset.loaded = src;
       } catch (e) { /* 加载失败静默：保持无背景，页面不崩 */ }
     }
 
@@ -1191,7 +1199,10 @@
       currentSlide = idx;
       // 预先解码缓存下一张，切换时无需等待
       const next = slides[(idx + 1) % slides.length];
-      if (next && next.dataset.bg && !next.dataset.loaded) loadBg(next.dataset.bg);
+      if (next) {
+        const ns = bgSrcFor(next);
+        if (ns && next.dataset.loaded !== ns) loadBg(ns);
+      }
     }
 
     function nextSlide() {
@@ -1215,6 +1226,18 @@
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) stopSlider(); else startSlider();
       });
+      // 视口宽度跨过 768px 断点时：清空已加载背景并切到对应背景集，从当前序号重新开始
+      function switchBgSet() {
+        stopSlider();
+        slides.forEach((s) => {
+          s.dataset.loaded = '';
+          s.style.backgroundImage = '';
+        });
+        goTo(currentSlide);
+        startSlider();
+      }
+      if (mobileBgMq.addEventListener) mobileBgMq.addEventListener('change', switchBgSet);
+      else if (mobileBgMq.addListener) mobileBgMq.addListener(switchBgSet);
     }
 
     // ═══════════ 公告栏模块 ═══════════
