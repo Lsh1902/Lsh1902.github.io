@@ -24,7 +24,8 @@
       --accent: #ff7a45;     /* 暖橙强调 */
       --accent-2: #ffb454;   /* 琥珀 */
       --bili: #fb7299;       /* B站品牌粉 */
-      --panel: rgba(17, 19, 26, 0.82);
+      --pixiv: #0096fa;      /* Pixiv 品牌蓝 */
+      --panel: rgba(17, 19, 26, 0.62);
       --panel-border: rgba(255, 255, 255, 0.1);
       --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -89,8 +90,8 @@
       width: 100%;
       height: 100%;
       background:
-        radial-gradient(120% 80% at 50% 0%, rgba(0, 0, 0, 0.22) 0%, transparent 55%),
-        linear-gradient(180deg, rgba(10, 10, 14, 0.55) 0%, rgba(10, 10, 14, 0.32) 45%, rgba(10, 10, 14, 0.72) 100%);
+        radial-gradient(120% 80% at 50% 0%, rgba(0, 0, 0, 0.15) 0%, transparent 55%),
+        linear-gradient(180deg, rgba(10, 10, 14, 0.42) 0%, rgba(10, 10, 14, 0.24) 45%, rgba(10, 10, 14, 0.56) 100%);
       pointer-events: none;
       z-index: -1;
       /* 豁免Dark Reader修改 */
@@ -109,8 +110,8 @@
     .card {
       position: relative;
       background: var(--panel);
-      backdrop-filter: blur(20px) saturate(1.15);
-      -webkit-backdrop-filter: blur(20px) saturate(1.15);
+      backdrop-filter: blur(14px) saturate(1.15);
+      -webkit-backdrop-filter: blur(14px) saturate(1.15);
       border-radius: 28px;
       padding: 30px 28px 26px;
       box-shadow:
@@ -121,7 +122,7 @@
       text-align: center;
       overflow: hidden;
       /* 适配Dark Reader的卡片背景 */
-      --darkreader-inline-bgcolor: rgba(17, 19, 26, 0.82) !important;
+      --darkreader-inline-bgcolor: rgba(17, 19, 26, 0.62) !important;
       --darkreader-inline-border: 1px solid rgba(90, 90, 110, 0.4) !important;
     }
 
@@ -335,6 +336,25 @@
     }
     .btn-bilibili .idx, .btn-bilibili .arrow { color: rgba(255, 255, 255, 0.85); }
     .btn-bilibili:hover .arrow { color: #fff; }
+
+    /* Pixiv 品牌蓝突出 */
+    .btn-pixiv {
+      background: linear-gradient(135deg, var(--pixiv), #0073d2);
+      border: none;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0, 150, 246, 0.3);
+      --darkreader-inline-bgimage: none !important;
+      --darkreader-inline-bgcolor: #0096fa !important;
+      --darkreader-inline-color: #fff !important;
+    }
+    .btn-pixiv:hover {
+      background: linear-gradient(135deg, #1aa3ff, #0069c4);
+      transform: translateY(-2px) translateX(0);
+      box-shadow: 0 12px 26px rgba(0, 150, 246, 0.45);
+      --darkreader-inline-bgcolor: #1aa3ff !important;
+    }
+    .btn-pixiv .idx, .btn-pixiv .arrow { color: rgba(255, 255, 255, 0.85); }
+    .btn-pixiv:hover .arrow { color: #fff; }
 
     /* ===== 番单面板：紧贴「我的番单」按钮下方展开 ===== */
     .fav-panel {
@@ -885,8 +905,11 @@
         <a href="https://space.bilibili.com/1895587617" target="_blank" rel="noopener" class="btn btn-bilibili">
           <span class="idx">01</span><span class="label">B站主页</span><span class="arrow">→</span>
         </a>
+        <a href="https://www.pixiv.net/users/82881248" target="_blank" rel="noopener" class="btn btn-pixiv">
+          <span class="idx">02</span><span class="label">Pixiv主页</span><span class="arrow">→</span>
+        </a>
         <a href="javascript:void(0)" class="btn btn-love" id="favoriteBtn" aria-expanded="false" aria-controls="favPanel">
-          <span class="idx">02</span><span class="label">我的番单</span><span class="arrow">→</span>
+          <span class="idx">03</span><span class="label">我的番单</span><span class="arrow">→</span>
         </a>
         <!-- 番单面板：点击「我的番单」展开，面板紧跟按钮下方 -->
         <div class="fav-panel" id="favPanel" hidden>
@@ -916,10 +939,10 @@
           </div>
         </div>
         <a href="https://github.com/Lsh1902" target="_blank" rel="noopener" class="btn btn-github">
-          <span class="idx">03</span><span class="label">GitHub</span><span class="arrow">→</span>
+          <span class="idx">04</span><span class="label">GitHub</span><span class="arrow">→</span>
         </a>
         <a href="/tools/" target="_blank" rel="noopener" class="btn btn-tools">
-          <span class="idx">04</span><span class="label">工具箱</span><span class="arrow">→</span>
+          <span class="idx">05</span><span class="label">工具箱</span><span class="arrow">→</span>
         </a>
       </div>
 
