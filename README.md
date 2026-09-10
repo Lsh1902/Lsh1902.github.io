@@ -45,6 +45,7 @@ https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/<路径>
 
 > 规则：仅保留最近一周（7 天）内的记录，超期条目自动删除。
 
+- 2026-09-11：主卡透明度再提高（--panel 0.30→0.20、backdrop-filter blur 6→4px 含 -webkit- 前缀，并同步 .card 内 --darkreader-inline-bgcolor），body::before 压暗遮罩整体再减淡一档（radial 0.10→0.07；linear 顶部 0.28→0.22、中部 0.16→0.12、底部 0.38→0.30）；因卡片更透，对卡内主要文字统一加深阴影保证可读性——.name / .sign / .tag / .card-top / .btn 与播放器区（NOW PLAYING、曲名与副标题、进度时间、歌曲列表）及公告栏标题/条目/正文；液态玻璃按钮与自发光效果经确认仍清晰（按钮自带 tint 底与 blur(10px)，不受主卡透明度影响）
 - 2026-09-11：5 个主按钮新增「自发光」——按各自主题色（B站 #fb7299 / Pixiv #0096fa / 番单 #ff7a45 / GitHub #6e5494 提亮档 / 工具箱 #ffb454）叠加两层主题色外光晕（0 0 10px + 0 0 26px，低位 alpha）+ inset 内发光微光，并配 3.6s ease-in-out 无限交替的呼吸动画（仅动画 box-shadow）；hover/active 发光增强（0 0 22px + 0 0 48px）且保留既有的上浮与光泽扫过；prefers-reduced-motion 下保留静态发光、关闭动画；≤480px 呼吸放缓至 4s 降低重绘开销；各按钮 Dark Reader 豁免同步补 --darkreader-inline-boxshadow 防止光晕被覆盖
 - 2026-09-11：主卡透明度再提高（--panel 0.40→0.30、backdrop blur 8→6px，并同步 Dark Reader 变量）；5 个主按钮统一改为「液态玻璃」主题色样式——B站 #fb7299 / Pixiv #0096fa / 番单 #ff7a45（沿用暖橙）/ GitHub #6e5494 / 工具箱 #ffb454（沿用琥珀橙），含半透明 tint 底 + backdrop blur/saturate + 1px 高光描边 + inset 顶部高光 + 柔和外阴影 + hover 上浮与光泽扫过（::before 不拦截点击）；≤480px 媒体查询与 Dark Reader 豁免声明同步更新
 - 2026-09-11：背景集扩充第 7-9 组（bg7~bg9.bin 桌面横版 / bg7m~bg9m.bin 手机竖版），桌面与手机端轮播均增至 9 张；新图沿用 ffmpeg→webp（最长边≤1920、q≈82）+ XOR 加密流程
