@@ -45,6 +45,7 @@ https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/<路径>
 
 > 规则：仅保留最近一周（7 天）内的记录，超期条目自动删除。
 
+- 2026-09-11：5 个主按钮新增「自发光」——按各自主题色（B站 #fb7299 / Pixiv #0096fa / 番单 #ff7a45 / GitHub #6e5494 提亮档 / 工具箱 #ffb454）叠加两层主题色外光晕（0 0 10px + 0 0 26px，低位 alpha）+ inset 内发光微光，并配 3.6s ease-in-out 无限交替的呼吸动画（仅动画 box-shadow）；hover/active 发光增强（0 0 22px + 0 0 48px）且保留既有的上浮与光泽扫过；prefers-reduced-motion 下保留静态发光、关闭动画；≤480px 呼吸放缓至 4s 降低重绘开销；各按钮 Dark Reader 豁免同步补 --darkreader-inline-boxshadow 防止光晕被覆盖
 - 2026-09-11：主卡透明度再提高（--panel 0.40→0.30、backdrop blur 8→6px，并同步 Dark Reader 变量）；5 个主按钮统一改为「液态玻璃」主题色样式——B站 #fb7299 / Pixiv #0096fa / 番单 #ff7a45（沿用暖橙）/ GitHub #6e5494 / 工具箱 #ffb454（沿用琥珀橙），含半透明 tint 底 + backdrop blur/saturate + 1px 高光描边 + inset 顶部高光 + 柔和外阴影 + hover 上浮与光泽扫过（::before 不拦截点击）；≤480px 媒体查询与 Dark Reader 豁免声明同步更新
 - 2026-09-11：背景集扩充第 7-9 组（bg7~bg9.bin 桌面横版 / bg7m~bg9m.bin 手机竖版），桌面与手机端轮播均增至 9 张；新图沿用 ffmpeg→webp（最长边≤1920、q≈82）+ XOR 加密流程
 - 2026-09-08：主卡面板再调高透明度（--panel 0.62→0.40、backdrop blur 14→8px）并同步 Dark Reader 变量、整体压暗遮罩再减淡约 1/3，轮播背景人物清晰可见；标题/签名/按钮文字补轻阴影保证可读性

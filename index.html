@@ -379,11 +379,20 @@
       background: linear-gradient(135deg, rgba(251, 114, 153, 0.34) 0%, rgba(251, 114, 153, 0.14) 52%, rgba(255, 255, 255, 0.08) 100%);
       border-color: rgba(251, 114, 153, 0.55);
       color: #fff;
+      /* 自发光：主题色外光晕（两层）+ 内发光微光，配 btn-glow-bilibili 呼吸动画 */
       box-shadow:
-        0 8px 22px rgba(251, 114, 153, 0.26),
-        0 2px 6px rgba(0, 0, 0, 0.24),
+        0 0 10px rgba(251, 114, 153, 0.38),
+        0 0 26px rgba(251, 114, 153, 0.22),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(251, 114, 153, 0.20),
         inset 0 1px 0 rgba(255, 255, 255, 0.38),
         inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      animation: btn-glow-bilibili 3.6s ease-in-out infinite alternate;
+      --darkreader-inline-boxshadow:
+        0 0 10px rgba(251, 114, 153, 0.38),
+        0 0 26px rgba(251, 114, 153, 0.22),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(251, 114, 153, 0.20) !important;
       --darkreader-inline-bgcolor: rgba(251, 114, 153, 0.30) !important;
       --darkreader-inline-color: #fff !important;
       --darkreader-inline-border: 1px solid rgba(251, 114, 153, 0.55) !important;
@@ -391,10 +400,20 @@
     .btn-bilibili:hover {
       background: linear-gradient(135deg, rgba(251, 114, 153, 0.48) 0%, rgba(251, 114, 153, 0.22) 52%, rgba(255, 255, 255, 0.10) 100%);
       border-color: rgba(251, 114, 153, 0.80);
+      /* hover/active：自发光增强（停用呼吸动画，改用静态高亮，避免动画覆盖增强值） */
+      animation: none;
       box-shadow:
+        0 0 22px rgba(251, 114, 153, 0.70),
+        0 0 48px rgba(251, 114, 153, 0.40),
         0 14px 30px rgba(251, 114, 153, 0.40),
-        inset 0 1px 0 rgba(255, 255, 255, 0.44),
+        inset 0 0 22px rgba(251, 114, 153, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.46),
         inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      --darkreader-inline-boxshadow:
+        0 0 22px rgba(251, 114, 153, 0.70),
+        0 0 48px rgba(251, 114, 153, 0.40),
+        0 14px 30px rgba(251, 114, 153, 0.40),
+        inset 0 0 22px rgba(251, 114, 153, 0.34) !important;
       --darkreader-inline-bgcolor: rgba(251, 114, 153, 0.42) !important;
     }
     .btn-bilibili .idx, .btn-bilibili .arrow { color: rgba(255, 219, 231, 0.92); }
@@ -405,11 +424,20 @@
       background: linear-gradient(135deg, rgba(0, 150, 250, 0.34) 0%, rgba(0, 150, 250, 0.14) 52%, rgba(255, 255, 255, 0.08) 100%);
       border-color: rgba(0, 150, 250, 0.55);
       color: #fff;
+      /* 自发光：主题色外光晕（两层）+ 内发光微光，配 btn-glow-pixiv 呼吸动画 */
       box-shadow:
-        0 8px 22px rgba(0, 150, 250, 0.26),
-        0 2px 6px rgba(0, 0, 0, 0.24),
+        0 0 10px rgba(0, 150, 250, 0.40),
+        0 0 26px rgba(0, 150, 250, 0.24),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(0, 150, 250, 0.22),
         inset 0 1px 0 rgba(255, 255, 255, 0.38),
         inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      animation: btn-glow-pixiv 3.6s ease-in-out infinite alternate;
+      --darkreader-inline-boxshadow:
+        0 0 10px rgba(0, 150, 250, 0.40),
+        0 0 26px rgba(0, 150, 250, 0.24),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(0, 150, 250, 0.22) !important;
       --darkreader-inline-bgcolor: rgba(0, 150, 250, 0.30) !important;
       --darkreader-inline-color: #fff !important;
       --darkreader-inline-border: 1px solid rgba(0, 150, 250, 0.55) !important;
@@ -417,10 +445,20 @@
     .btn-pixiv:hover {
       background: linear-gradient(135deg, rgba(0, 150, 250, 0.48) 0%, rgba(0, 150, 250, 0.22) 52%, rgba(255, 255, 255, 0.10) 100%);
       border-color: rgba(0, 150, 250, 0.80);
+      /* hover/active：自发光增强（停用呼吸动画，改用静态高亮，避免动画覆盖增强值） */
+      animation: none;
       box-shadow:
+        0 0 22px rgba(0, 150, 250, 0.72),
+        0 0 48px rgba(0, 150, 250, 0.42),
         0 14px 30px rgba(0, 150, 250, 0.42),
-        inset 0 1px 0 rgba(255, 255, 255, 0.44),
+        inset 0 0 22px rgba(0, 150, 250, 0.36),
+        inset 0 1px 0 rgba(255, 255, 255, 0.46),
         inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      --darkreader-inline-boxshadow:
+        0 0 22px rgba(0, 150, 250, 0.72),
+        0 0 48px rgba(0, 150, 250, 0.42),
+        0 14px 30px rgba(0, 150, 250, 0.42),
+        inset 0 0 22px rgba(0, 150, 250, 0.36) !important;
       --darkreader-inline-bgcolor: rgba(0, 150, 250, 0.42) !important;
     }
     .btn-pixiv .idx, .btn-pixiv .arrow { color: rgba(208, 234, 255, 0.92); }
@@ -431,11 +469,20 @@
       background: linear-gradient(135deg, rgba(255, 122, 69, 0.34) 0%, rgba(255, 122, 69, 0.14) 52%, rgba(255, 255, 255, 0.08) 100%);
       border-color: rgba(255, 122, 69, 0.55);
       color: #fff;
+      /* 自发光：主题色外光晕（两层）+ 内发光微光，配 btn-glow-love 呼吸动画 */
       box-shadow:
-        0 8px 22px rgba(255, 122, 69, 0.26),
-        0 2px 6px rgba(0, 0, 0, 0.24),
+        0 0 10px rgba(255, 122, 69, 0.40),
+        0 0 26px rgba(255, 122, 69, 0.24),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(255, 122, 69, 0.22),
         inset 0 1px 0 rgba(255, 255, 255, 0.38),
         inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      animation: btn-glow-love 3.6s ease-in-out infinite alternate;
+      --darkreader-inline-boxshadow:
+        0 0 10px rgba(255, 122, 69, 0.40),
+        0 0 26px rgba(255, 122, 69, 0.24),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(255, 122, 69, 0.22) !important;
       --darkreader-inline-bgcolor: rgba(255, 122, 69, 0.30) !important;
       --darkreader-inline-color: #fff !important;
       --darkreader-inline-border: 1px solid rgba(255, 122, 69, 0.55) !important;
@@ -443,10 +490,20 @@
     .btn-love:hover {
       background: linear-gradient(135deg, rgba(255, 122, 69, 0.48) 0%, rgba(255, 122, 69, 0.22) 52%, rgba(255, 255, 255, 0.10) 100%);
       border-color: rgba(255, 122, 69, 0.80);
+      /* hover/active：自发光增强（停用呼吸动画，改用静态高亮，避免动画覆盖增强值） */
+      animation: none;
       box-shadow:
-        0 14px 30px rgba(255, 122, 69, 0.40),
-        inset 0 1px 0 rgba(255, 255, 255, 0.44),
+        0 0 22px rgba(255, 122, 69, 0.72),
+        0 0 48px rgba(255, 122, 69, 0.42),
+        0 14px 30px rgba(255, 122, 69, 0.42),
+        inset 0 0 22px rgba(255, 122, 69, 0.36),
+        inset 0 1px 0 rgba(255, 255, 255, 0.46),
         inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      --darkreader-inline-boxshadow:
+        0 0 22px rgba(255, 122, 69, 0.72),
+        0 0 48px rgba(255, 122, 69, 0.42),
+        0 14px 30px rgba(255, 122, 69, 0.42),
+        inset 0 0 22px rgba(255, 122, 69, 0.36) !important;
       --darkreader-inline-bgcolor: rgba(255, 122, 69, 0.42) !important;
     }
     .btn-love .idx, .btn-love .arrow { color: rgba(255, 226, 210, 0.92); }
@@ -457,11 +514,20 @@
       background: linear-gradient(135deg, rgba(110, 84, 148, 0.42) 0%, rgba(110, 84, 148, 0.18) 52%, rgba(255, 255, 255, 0.08) 100%);
       border-color: rgba(167, 139, 250, 0.55);
       color: #fff;
+      /* 自发光：品牌紫外光晕（提亮一档保证深底可见，两层）+ 内发光微光，配 btn-glow-github 呼吸动画 */
       box-shadow:
-        0 8px 22px rgba(110, 84, 148, 0.32),
-        0 2px 6px rgba(0, 0, 0, 0.24),
+        0 0 10px rgba(146, 118, 196, 0.44),
+        0 0 26px rgba(110, 84, 148, 0.30),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(146, 118, 196, 0.24),
         inset 0 1px 0 rgba(255, 255, 255, 0.36),
         inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      animation: btn-glow-github 3.6s ease-in-out infinite alternate;
+      --darkreader-inline-boxshadow:
+        0 0 10px rgba(146, 118, 196, 0.44),
+        0 0 26px rgba(110, 84, 148, 0.30),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(146, 118, 196, 0.24) !important;
       --darkreader-inline-bgcolor: rgba(110, 84, 148, 0.36) !important;
       --darkreader-inline-color: #fff !important;
       --darkreader-inline-border: 1px solid rgba(167, 139, 250, 0.55) !important;
@@ -469,10 +535,20 @@
     .btn-github:hover {
       background: linear-gradient(135deg, rgba(124, 97, 166, 0.56) 0%, rgba(110, 84, 148, 0.26) 52%, rgba(255, 255, 255, 0.10) 100%);
       border-color: rgba(190, 168, 255, 0.80);
+      /* hover/active：自发光增强（停用呼吸动画，改用静态高亮，避免动画覆盖增强值） */
+      animation: none;
       box-shadow:
+        0 0 22px rgba(167, 139, 250, 0.74),
+        0 0 48px rgba(146, 118, 196, 0.42),
         0 14px 30px rgba(124, 97, 166, 0.46),
-        inset 0 1px 0 rgba(255, 255, 255, 0.42),
+        inset 0 0 22px rgba(167, 139, 250, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.44),
         inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+      --darkreader-inline-boxshadow:
+        0 0 22px rgba(167, 139, 250, 0.74),
+        0 0 48px rgba(146, 118, 196, 0.42),
+        0 14px 30px rgba(124, 97, 166, 0.46),
+        inset 0 0 22px rgba(167, 139, 250, 0.34) !important;
       --darkreader-inline-bgcolor: rgba(124, 97, 166, 0.48) !important;
     }
     .btn-github .idx, .btn-github .arrow { color: rgba(220, 209, 255, 0.92); }
@@ -483,11 +559,20 @@
       background: linear-gradient(135deg, rgba(255, 180, 84, 0.32) 0%, rgba(255, 180, 84, 0.13) 52%, rgba(255, 255, 255, 0.08) 100%);
       border-color: rgba(255, 180, 84, 0.55);
       color: #fff;
+      /* 自发光：主题色外光晕（两层）+ 内发光微光，配 btn-glow-tools 呼吸动画 */
       box-shadow:
-        0 8px 22px rgba(255, 180, 84, 0.26),
-        0 2px 6px rgba(0, 0, 0, 0.24),
+        0 0 10px rgba(255, 180, 84, 0.38),
+        0 0 26px rgba(255, 180, 84, 0.22),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(255, 180, 84, 0.20),
         inset 0 1px 0 rgba(255, 255, 255, 0.38),
         inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      animation: btn-glow-tools 3.6s ease-in-out infinite alternate;
+      --darkreader-inline-boxshadow:
+        0 0 10px rgba(255, 180, 84, 0.38),
+        0 0 26px rgba(255, 180, 84, 0.22),
+        0 6px 20px rgba(0, 0, 0, 0.26),
+        inset 0 0 12px rgba(255, 180, 84, 0.20) !important;
       --darkreader-inline-bgcolor: rgba(255, 180, 84, 0.28) !important;
       --darkreader-inline-color: #fff !important;
       --darkreader-inline-border: 1px solid rgba(255, 180, 84, 0.55) !important;
@@ -495,14 +580,131 @@
     .btn-tools:hover {
       background: linear-gradient(135deg, rgba(255, 180, 84, 0.46) 0%, rgba(255, 180, 84, 0.21) 52%, rgba(255, 255, 255, 0.10) 100%);
       border-color: rgba(255, 180, 84, 0.80);
+      /* hover/active：自发光增强（停用呼吸动画，改用静态高亮，避免动画覆盖增强值） */
+      animation: none;
       box-shadow:
+        0 0 22px rgba(255, 180, 84, 0.70),
+        0 0 48px rgba(255, 180, 84, 0.40),
         0 14px 30px rgba(255, 180, 84, 0.40),
-        inset 0 1px 0 rgba(255, 255, 255, 0.44),
+        inset 0 0 22px rgba(255, 180, 84, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.46),
         inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      --darkreader-inline-boxshadow:
+        0 0 22px rgba(255, 180, 84, 0.70),
+        0 0 48px rgba(255, 180, 84, 0.40),
+        0 14px 30px rgba(255, 180, 84, 0.40),
+        inset 0 0 22px rgba(255, 180, 84, 0.34) !important;
       --darkreader-inline-bgcolor: rgba(255, 180, 84, 0.42) !important;
     }
     .btn-tools .idx, .btn-tools .arrow { color: rgba(255, 238, 208, 0.92); }
     .btn-tools:hover .arrow { color: #fff; }
+
+    /* ===== 按钮自发光呼吸动画：3.6s ease-in-out 无限交替，仅动画 box-shadow（移动端友好） ===== */
+    /* 01 B站 #fb7299 */
+    @keyframes btn-glow-bilibili {
+      from {
+        box-shadow:
+          0 0 10px rgba(251, 114, 153, 0.38),
+          0 0 26px rgba(251, 114, 153, 0.22),
+          0 6px 20px rgba(0, 0, 0, 0.26),
+          inset 0 0 12px rgba(251, 114, 153, 0.20),
+          inset 0 1px 0 rgba(255, 255, 255, 0.38),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      }
+      to {
+        box-shadow:
+          0 0 18px rgba(251, 114, 153, 0.62),
+          0 0 40px rgba(251, 114, 153, 0.36),
+          0 6px 22px rgba(0, 0, 0, 0.28),
+          inset 0 0 20px rgba(251, 114, 153, 0.32),
+          inset 0 1px 0 rgba(255, 255, 255, 0.44),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      }
+    }
+    /* 02 Pixiv #0096fa */
+    @keyframes btn-glow-pixiv {
+      from {
+        box-shadow:
+          0 0 10px rgba(0, 150, 250, 0.40),
+          0 0 26px rgba(0, 150, 250, 0.24),
+          0 6px 20px rgba(0, 0, 0, 0.26),
+          inset 0 0 12px rgba(0, 150, 250, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.38),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      }
+      to {
+        box-shadow:
+          0 0 18px rgba(0, 150, 250, 0.64),
+          0 0 40px rgba(0, 150, 250, 0.38),
+          0 6px 22px rgba(0, 0, 0, 0.28),
+          inset 0 0 20px rgba(0, 150, 250, 0.34),
+          inset 0 1px 0 rgba(255, 255, 255, 0.44),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      }
+    }
+    /* 03 我的番单 #ff7a45 */
+    @keyframes btn-glow-love {
+      from {
+        box-shadow:
+          0 0 10px rgba(255, 122, 69, 0.40),
+          0 0 26px rgba(255, 122, 69, 0.24),
+          0 6px 20px rgba(0, 0, 0, 0.26),
+          inset 0 0 12px rgba(255, 122, 69, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.38),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      }
+      to {
+        box-shadow:
+          0 0 18px rgba(255, 122, 69, 0.64),
+          0 0 40px rgba(255, 122, 69, 0.38),
+          0 6px 22px rgba(0, 0, 0, 0.28),
+          inset 0 0 20px rgba(255, 122, 69, 0.34),
+          inset 0 1px 0 rgba(255, 255, 255, 0.44),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      }
+    }
+    /* 04 GitHub #6e5494（光晕用提亮档 rgba(146,118,196) 保证深底可见） */
+    @keyframes btn-glow-github {
+      from {
+        box-shadow:
+          0 0 10px rgba(146, 118, 196, 0.44),
+          0 0 26px rgba(110, 84, 148, 0.30),
+          0 6px 20px rgba(0, 0, 0, 0.26),
+          inset 0 0 12px rgba(146, 118, 196, 0.24),
+          inset 0 1px 0 rgba(255, 255, 255, 0.36),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      }
+      to {
+        box-shadow:
+          0 0 18px rgba(146, 118, 196, 0.66),
+          0 0 40px rgba(146, 118, 196, 0.40),
+          0 6px 22px rgba(0, 0, 0, 0.28),
+          inset 0 0 20px rgba(146, 118, 196, 0.36),
+          inset 0 1px 0 rgba(255, 255, 255, 0.42),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+      }
+    }
+    /* 05 工具箱 #ffb454 */
+    @keyframes btn-glow-tools {
+      from {
+        box-shadow:
+          0 0 10px rgba(255, 180, 84, 0.38),
+          0 0 26px rgba(255, 180, 84, 0.22),
+          0 6px 20px rgba(0, 0, 0, 0.26),
+          inset 0 0 12px rgba(255, 180, 84, 0.20),
+          inset 0 1px 0 rgba(255, 255, 255, 0.38),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.14);
+      }
+      to {
+        box-shadow:
+          0 0 18px rgba(255, 180, 84, 0.62),
+          0 0 40px rgba(255, 180, 84, 0.36),
+          0 6px 22px rgba(0, 0, 0, 0.28),
+          inset 0 0 20px rgba(255, 180, 84, 0.32),
+          inset 0 1px 0 rgba(255, 255, 255, 0.44),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+      }
+    }
 
     /* ===== 番单面板：紧贴「我的番单」按钮下方展开 ===== */
     .fav-panel {
@@ -972,6 +1174,8 @@
       .links { gap: 8px; margin-bottom: 18px; }
       /* 按钮：保持 ≥44px 触摸高度 */
       .btn { padding: 13px 14px; min-height: 48px; font-size: 14px; }
+      /* 小屏自发光：放缓呼吸节奏至 4s，降低高频重绘开销 */
+      .links .btn { animation-duration: 4s; }
       /* 番单面板：收窄内边距，条目保持可点按高度 */
       .fav-panel { padding: 14px 12px 6px; }
       .fav-item { padding: 11px 12px; }
@@ -1000,6 +1204,8 @@
       .eq span { animation: none; }
       .bg-slide { transition: opacity 0.3s ease-in-out !important; }
       .btn, .control-btn, .arrow { transition: none; }
+      /* 自发光降级：保留静态主题色光晕（box-shadow 常态值），仅关闭呼吸动画 */
+      .links .btn { animation: none; }
     }
   </style>
 </head>
