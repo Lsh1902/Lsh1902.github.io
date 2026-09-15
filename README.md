@@ -45,6 +45,8 @@ https://cdn.jsdelivr.net/gh/Lsh1902/Lsh1902.github.io@main/<路径>
 
 > 规则：仅保留最近一周（7 天）内的记录，超期条目自动删除。
 
+- 2026-09-15：在保持主卡透明度 --panel 0.12 / backdrop-filter blur 2px 不变的前提下，进一步提升卡内文字可读性——① 文字阴影统一再加强一档为「近实描边 + 中距柔和 + 远距扩散」多层叠加，.card 新增基准 text-shadow 供未自定义元素继承，.card-top / .sign / .tag / .btn / .fav-group-title 与播放器区（NOW PLAYING、曲名与副标题、进度时间、歌名与列表项）、公告栏标题/条目/正文逐处升级；② 次要文字提亮并加字重：--ink-dim #b8ad97→#cfc6b4（同步 11 处 --darkreader-inline-color），.sign / .song-meta / 副标题 400→500、.progress-time 与 .card-top 补 500/600 字重；③ 关键标题 .name 增加 1px -webkit-text-stroke 轻微描边（配 paint-order: stroke fill）并升级为 5 层阴影；④ 按钮液态玻璃自发光与文字颜色保持不变。未改动 --panel 透明度、backdrop-filter 与任何布局结构
+
 - 2026-09-15：主卡透明度继续提高（--panel 0.20→0.12、backdrop-filter blur 4→2px 含 -webkit- 前缀，并同步 .card 内 --darkreader-inline-bgcolor 至 0.12），body::before 压暗遮罩再减淡一档（radial 0.07→0.05；linear 顶部 0.22→0.16、中部 0.12→0.09、底部 0.30→0.22）；主卡接近全透后，对卡内主要文字进一步强化可读性——.name 升级为 4 层阴影并加入 1px 近描边层，.card-top / .sign / .tag / .btn 与播放器区（NOW PLAYING、曲名与副标题、进度时间、歌曲列表）、公告栏标题/条目/正文统一加深阴影，另补 .fav-group-title；仅调整 text-shadow，未改动任何排版与结构
 
 - 2026-09-11：主卡透明度再提高（--panel 0.30→0.20、backdrop-filter blur 6→4px 含 -webkit- 前缀，并同步 .card 内 --darkreader-inline-bgcolor），body::before 压暗遮罩整体再减淡一档（radial 0.10→0.07；linear 顶部 0.28→0.22、中部 0.16→0.12、底部 0.38→0.30）；因卡片更透，对卡内主要文字统一加深阴影保证可读性——.name / .sign / .tag / .card-top / .btn 与播放器区（NOW PLAYING、曲名与副标题、进度时间、歌曲列表）及公告栏标题/条目/正文；液态玻璃按钮与自发光效果经确认仍清晰（按钮自带 tint 底与 blur(10px)，不受主卡透明度影响）

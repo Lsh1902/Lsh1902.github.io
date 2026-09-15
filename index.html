@@ -20,7 +20,7 @@
     :root {
       color-scheme: dark;    /* 系统深色模式：原生控件使用深色渲染，避免表单/滚动条变亮 */
       --ink: #f4ecdd;        /* 米白主文字 */
-      --ink-dim: #b8ad97;    /* 次级文字 */
+      --ink-dim: #cfc6b4;    /* 次级文字：提亮一档，提升高透卡片下的对比度 */
       --accent: #ff7a45;     /* 暖橙强调 */
       --accent-2: #ffb454;   /* 琥珀 */
       --bili: #fb7299;       /* B站品牌粉 */
@@ -123,6 +123,12 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
       border: 1px solid var(--panel-border);
       text-align: center;
+      /* 全局文字阴影基准：近实描边 + 中距柔和 + 远距扩散（子元素各自的自定义阴影优先） */
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.85),
+        0 1px 2px rgba(0, 0, 0, 0.8),
+        0 2px 8px rgba(0, 0, 0, 0.6),
+        0 0 18px rgba(0, 0, 0, 0.4);
       overflow: hidden;
       /* 适配Dark Reader的卡片背景 */
       --darkreader-inline-bgcolor: rgba(17, 19, 26, 0.12) !important;
@@ -155,10 +161,16 @@
       margin: 2px 0 18px;
       font-size: 11px;
       letter-spacing: 2px;
+      font-weight: 600;
       color: var(--ink-dim);
       text-transform: uppercase;
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85), 0 0 12px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.6);
-      --darkreader-inline-color: #b8ad97 !important;
+      /* 近实描边 + 中距柔和 + 远距扩散 */
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 9px rgba(0, 0, 0, 0.72),
+        0 0 20px rgba(0, 0, 0, 0.48);
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     .card-top .rec {
       display: inline-flex;
@@ -219,11 +231,15 @@
       color: var(--ink);
       margin-bottom: 6px;
       line-height: 1.2;
+      /* 关键标题：轻微描边 + 近实描边 + 中距柔和 + 远距扩散 */
+      -webkit-text-stroke: 1px rgba(0, 0, 0, 0.45);
+      paint-order: stroke fill;
       text-shadow:
-        0 2px 14px rgba(0, 0, 0, 0.9),
-        0 0 22px rgba(0, 0, 0, 0.6),
-        0 1px 3px rgba(0, 0, 0, 0.85),
-        0 0 1px rgba(0, 0, 0, 0.7);
+        0 0 1px rgba(0, 0, 0, 1),
+        0 1px 2px rgba(0, 0, 0, 0.95),
+        0 2px 7px rgba(0, 0, 0, 0.85),
+        0 4px 18px rgba(0, 0, 0, 0.7),
+        0 0 32px rgba(0, 0, 0, 0.55);
       --darkreader-inline-color: #f4ecdd !important;
     }
     .name .dot {
@@ -232,11 +248,16 @@
     }
     .sign {
       font-size: 13.5px;
+      font-weight: 500;
       letter-spacing: 2px;
       color: var(--ink-dim);
       margin-bottom: 22px;
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9), 0 0 16px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.75);
-      --darkreader-inline-color: #b8ad97 !important;
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 10px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(0, 0, 0, 0.5);
+      --darkreader-inline-color: #cfc6b4 !important;
     }
 
     /* ===== 标签：编号胶囊 ===== */
@@ -258,7 +279,11 @@
       border-radius: 999px;
       font-size: 12.5px;
       font-weight: 500;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.6);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 9px rgba(0, 0, 0, 0.72),
+        0 0 20px rgba(0, 0, 0, 0.48);
       --darkreader-inline-bgcolor: rgba(255, 122, 69, 0.12) !important;
       --darkreader-inline-color: #f4ecdd !important;
       --darkreader-inline-border: 1px solid rgba(255, 122, 69, 0.22) !important;
@@ -308,7 +333,12 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.26),
         inset 0 -1px 0 rgba(0, 0, 0, 0.14);
       transition: transform 0.25s var(--ease-out), background 0.25s, box-shadow 0.25s, border-color 0.25s;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.45), 0 1px 1px rgba(0, 0, 0, 0.6);
+      /* 按钮文字：仅加强阴影（自发光与文字颜色保持不变） */
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 10px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(0, 0, 0, 0.5);
       --darkreader-inline-bgimage: none !important;
       --darkreader-inline-bgcolor: rgba(255, 255, 255, 0.09) !important;
       --darkreader-inline-color: #f4ecdd !important;
@@ -339,7 +369,7 @@
       color: var(--ink-dim);
       width: 20px;
       text-align: left;
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     .btn .label {
       position: relative;
@@ -353,7 +383,7 @@
       font-size: 16px;
       color: var(--ink-dim);
       transition: transform 0.25s var(--ease-out), color 0.25s;
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     .btn:hover {
       transform: translateY(-2px);
@@ -727,7 +757,11 @@
       font-weight: 700;
       color: var(--accent-2);
       margin: 4px 0 8px;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.5);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 9px rgba(0, 0, 0, 0.72),
+        0 0 20px rgba(0, 0, 0, 0.48);
       --darkreader-inline-color: #ffb454 !important;
     }
     .fav-group + .fav-group { margin-top: 10px; }
@@ -777,7 +811,11 @@
       font-weight: 700;
       margin-bottom: 10px;
       text-transform: uppercase;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.6);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 9px rgba(0, 0, 0, 0.72),
+        0 0 20px rgba(0, 0, 0, 0.48);
       --darkreader-inline-color: #ffb454 !important;
     }
     .music-row {
@@ -792,20 +830,28 @@
       font-size: 14px;
       color: var(--ink);
       font-weight: 600;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.6);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 10px rgba(0, 0, 0, 0.75),
+        0 0 22px rgba(0, 0, 0, 0.5);
       --darkreader-inline-color: #f4ecdd !important;
     }
     .music-title small {
       display: block;
       font-size: 11px;
-      font-weight: 400;
+      font-weight: 500;
       color: var(--ink-dim);
       letter-spacing: 1px;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8), 0 0 9px rgba(0, 0, 0, 0.45);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 8px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(0, 0, 0, 0.45);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     #trackName {
       display: block;
@@ -848,7 +894,7 @@
       box-shadow: none;
       border: 1px solid rgba(255, 255, 255, 0.12);
       --darkreader-inline-bgcolor: rgba(255, 255, 255, 0.08) !important;
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
       --darkreader-inline-border: 1px solid rgba(255, 255, 255, 0.12) !important;
     }
     .control-btn.mini-btn:hover {
@@ -949,10 +995,15 @@
       margin-top: 6px;
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
       font-size: 11px;
+      font-weight: 500;
       letter-spacing: 0.5px;
       color: var(--ink-dim);
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 9px rgba(0, 0, 0, 0.45);
-      --darkreader-inline-color: #b8ad97 !important;
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 8px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(0, 0, 0, 0.45);
+      --darkreader-inline-color: #cfc6b4 !important;
     }
 
     /* ===== 完整歌曲列表 ===== */
@@ -998,19 +1049,36 @@
       font-weight: 800;
       letter-spacing: 1px;
       color: var(--ink-dim);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.45);
-      --darkreader-inline-color: #b8ad97 !important;
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 8px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(0, 0, 0, 0.45);
+      --darkreader-inline-color: #cfc6b4 !important;
     }
-    .song-name { flex: 1; font-weight: 600; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.45); }
+    .song-name {
+      flex: 1;
+      font-weight: 600;
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 8px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(0, 0, 0, 0.45);
+    }
     .song-meta {
       font-size: 11px;
+      font-weight: 500;
       color: var(--ink-dim);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(0, 0, 0, 0.45);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 8px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(0, 0, 0, 0.45);
       max-width: 50%;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     .song-state {
       width: 16px;
@@ -1042,7 +1110,11 @@
       letter-spacing: 1px;
       cursor: pointer;
       padding: 6px 2px;
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85), 0 0 10px rgba(0, 0, 0, 0.5), 0 1px 1px rgba(0, 0, 0, 0.6);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 9px rgba(0, 0, 0, 0.72),
+        0 0 20px rgba(0, 0, 0, 0.48);
       --darkreader-inline-color: #f4ecdd !important;
     }
     .announce-toggle .arrow {
@@ -1068,7 +1140,7 @@
       font-size: 12px;
       text-align: center;
       padding: 12px 0;
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     .announce-error { color: #e07a5f; --darkreader-inline-color: #e07a5f !important; }
     .announce-item {
@@ -1090,7 +1162,11 @@
       font-weight: 600;
       color: var(--ink);
       user-select: none;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 9px rgba(0, 0, 0, 0.45);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.95),
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 2px 9px rgba(0, 0, 0, 0.72),
+        0 0 20px rgba(0, 0, 0, 0.48);
       --darkreader-inline-color: #f4ecdd !important;
     }
     .announce-item summary::-webkit-details-marker { display: none; }
@@ -1121,7 +1197,11 @@
       font-size: 12.5px;
       line-height: 1.7;
       color: var(--ink);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.75), 0 0 9px rgba(0, 0, 0, 0.42);
+      text-shadow:
+        0 0 1px rgba(0, 0, 0, 0.92),
+        0 1px 2px rgba(0, 0, 0, 0.85),
+        0 2px 9px rgba(0, 0, 0, 0.68),
+        0 0 20px rgba(0, 0, 0, 0.45);
       --darkreader-inline-color: #f4ecdd !important;
     }
     .announce-content p { margin: 6px 0; }
@@ -1152,7 +1232,7 @@
       padding-left: 10px;
       border-left: 3px solid var(--accent-2);
       color: var(--ink-dim);
-      --darkreader-inline-color: #b8ad97 !important;
+      --darkreader-inline-color: #cfc6b4 !important;
     }
     .announce-content hr {
       border: none;
